@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NUE — We don't sell, but lifestyle. A quiet rebellion against fast fashion. Minimal. Timeless. Intentional." />
+  <meta name="keywords" content="NUE, minimal fashion, timeless clothing, lifestyle brand, slow fashion, luxury minimal" />
+  <meta property="og:title" content="NUE — We don't sell, but lifestyle." />
+  <meta property="og:description" content="Step into the world of NUE. Clothes are temporary. Identity is not." />
+  <title>NUE — We don't sell, but lifestyle.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== CUSTOM CURSOR ===================== -->
+  <div id="cursor" class="cursor"></div>
+  <div id="cursor-follower" class="cursor-follower"></div>
+
+  <!-- ===================== LOADER ===================== -->
+  <div id="loader" class="loader">
+    <div class="loader-line"></div>
+    <div class="loader-brand">NUE</div>
+    <div class="loader-tagline">We don't sell, but lifestyle.</div>
+  </div>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav id="nav" class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-logo"><a href="#hero" aria-label="NUE Home">NUE</a></div>
+    <div class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" role="button" tabindex="0">
+      <span></span><span></span>
+    </div>
+    <ul class="nav-links" role="list">
+      <li><a href="#collection" class="nav-link" data-analytics-nav="Collection">Collection</a></li>
+      <li><a href="#essentials" class="nav-link" data-analytics-nav="Essentials">Essentials</a></li>
+      <li><a href="#about" class="nav-link" data-analytics-nav="About">About</a></li>
+      <li><a href="#journal" class="nav-link" data-analytics-nav="Journal">Journal</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-icon-btn" id="search-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </button>
+      <button class="nav-icon-btn" id="wishlist-btn" aria-label="Wishlist">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+      <button class="nav-icon-btn" id="cart-btn" aria-label="Cart" style="position:relative;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span id="cart-count" class="cart-count">0</span>
+      </button>
+      <button class="lifestyle-mode-btn" id="lifestyle-toggle" aria-label="Toggle Lifestyle Mode">
+        <span class="lifestyle-dot"></span> Lifestyle Mode
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== MOBILE MENU ===================== -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu-inner">
+      <ul role="list">
+        <li><a href="#collection" class="mobile-nav-link">Collection</a></li>
+        <li><a href="#essentials" class="mobile-nav-link">Essentials</a></li>
+        <li><a href="#about" class="mobile-nav-link">About</a></li>
+        <li><a href="#journal" class="mobile-nav-link">Journal</a></li>
+      </ul>
+      <div class="mobile-menu-footer">
+        <p>Live simply.<br/>Wear intentionally.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SEARCH OVERLAY ===================== -->
+  <div class="search-overlay" id="search-overlay" aria-hidden="true">
+    <button class="overlay-close" id="search-close" aria-label="Close search">✕</button>
+    <div class="search-inner">
+      <p class="search-label">What are you looking for?</p>
+      <input type="text" id="search-input" class="search-input" placeholder="Type to search..." aria-label="Search products" />
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+
+  <!-- ===================== CART SIDEBAR ===================== -->
+  <div class="cart-sidebar" id="cart-sidebar" aria-hidden="true">
+    <div class="cart-sidebar-inner">
+      <div class="cart-header">
+        <h2>Your Selection</h2>
+        <button class="cart-close" id="cart-close" aria-label="Close cart">✕</button>
+      </div>
+      <div class="cart-items" id="cart-items">
+        <div class="cart-empty">
+          <p>Your cart is empty.</p>
+          <span>Begin curating your wardrobe.</span>
+        </div>
+      </div>
+      <div class="cart-footer" id="cart-footer" style="display:none;">
+        <div class="cart-total">
+          <span>Total</span>
+          <span id="cart-total-price">$0</span>
+        </div>
+        <button class="btn-primary full-width" id="checkout-btn">Proceed to Checkout</button>
+        <p class="cart-note">Free shipping on all orders. Complimentary gift wrap available.</p>
+      </div>
+    </div>
+  </div>
+  <div class="cart-overlay" id="cart-overlay"></div>
+
+  <!-- ===================== HERO ===================== -->
+  <section id="hero" class="hero" role="banner">
+    <div class="hero-bg" id="hero-bg">
+      <img src="assets/images/hero.png" alt="NUE editorial hero" class="hero-img" loading="eager" />
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content" id="hero-content">
+      <div class="hero-brand-mark" id="hero-brand">NUE</div>
+      <div class="hero-divider"></div>
+      <p class="hero-tagline" id="hero-tag">A QUIETER<br/>WAY TO DRESS.</p>
+      <a href="#collection" class="hero-cta" id="hero-cta" data-analytics="hero_cta" aria-label="Enter the collection">
+        <span>Enter the Collection</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="hero-scroll-indicator" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ===================== MARQUEE ===================== -->
+  <div class="marquee-section" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="marquee-inner">
+        <span>Minimal</span><span>·</span>
+        <span>Timeless</span><span>·</span>
+        <span>Intentional</span><span>·</span>
+        <span>Identity</span><span>·</span>
+        <span>Silence</span><span>·</span>
+        <span>Essence</span><span>·</span>
+        <span>Minimal</span><span>·</span>
+        <span>Timeless</span><span>·</span>
+        <span>Intentional</span><span>·</span>
+        <span>Identity</span><span>·</span>
+        <span>Silence</span><span>·</span>
+        <span>Essence</span><span>·</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== COLLECTION ===================== -->
+  <section id="collection" class="collection-section" aria-labelledby="collection-heading">
+    <div class="section-header reveal">
+      <p class="section-label">The Collection</p>
+      <h2 id="collection-heading" class="section-title">Curated for those<br/>who know.</h2>
+    </div>
+
+    <div class="collection-grid">
+
+      <article class="product-card reveal" data-id="1" data-name="The Linen Coat" data-price="490" data-category="Outerwear" data-analytics-product="1">
+        <div class="product-image-wrap">
+          <img src="assets/images/product1.png" alt="The Linen Coat — NUE" class="product-img" loading="lazy" />
+          <div class="product-overlay">
+            <button class="quick-view-btn" data-id="1" aria-label="Quick view The Linen Coat">View</button>
+          </div>
+          <button class="wishlist-btn-card" data-id="1" aria-label="Add to wishlist" title="Add to wishlist">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">The Linen Coat</h3>
+          <p class="product-desc">Unstructured. Undyed. Unapologetic.</p>
+          <div class="product-footer">
+            <span class="product-price">$490</span>
+            <button class="add-to-cart" data-id="1" data-name="The Linen Coat" data-price="490" aria-label="Add The Linen Coat to cart">Add</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card product-card--large reveal" data-id="2" data-name="Wide Trousers" data-price="320" data-category="Bottoms" data-analytics-product="2">
+        <div class="product-image-wrap">
+          <img src="assets/images/product2.png" alt="Wide Trousers — NUE" class="product-img" loading="lazy" />
+          <div class="product-overlay">
+            <button class="quick-view-btn" data-id="2" aria-label="Quick view Wide Trousers">View</button>
+          </div>
+          <button class="wishlist-btn-card" data-id="2" aria-label="Add to wishlist" title="Add to wishlist">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Wide Trousers</h3>
+          <p class="product-desc">Architecture for the body.</p>
+          <div class="product-footer">
+            <span class="product-price">$320</span>
+            <button class="add-to-cart" data-id="2" data-name="Wide Trousers" data-price="320" aria-label="Add Wide Trousers to cart">Add</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-id="3" data-name="Knit Sweater" data-price="280" data-category="Tops" data-analytics-product="3">
+        <div class="product-image-wrap">
+          <img src="assets/images/product3.png" alt="Knit Sweater — NUE" class="product-img" loading="lazy" />
+          <div class="product-overlay">
+            <button class="quick-view-btn" data-id="3" aria-label="Quick view Knit Sweater">View</button>
+          </div>
+          <button class="wishlist-btn-card" data-id="3" aria-label="Add to wishlist" title="Add to wishlist">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Knit Sweater</h3>
+          <p class="product-desc">Stone grey. Silence woven in.</p>
+          <div class="product-footer">
+            <span class="product-price">$280</span>
+            <button class="add-to-cart" data-id="3" data-name="Knit Sweater" data-price="280" aria-label="Add Knit Sweater to cart">Add</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-id="4" data-name="Linen Shirt" data-price="195" data-category="Tops" data-analytics-product="4">
+        <div class="product-image-wrap">
+          <img src="assets/images/product4.png" alt="Linen Shirt — NUE" class="product-img" loading="lazy" />
+          <div class="product-overlay">
+            <button class="quick-view-btn" data-id="4" aria-label="Quick view Linen Shirt">View</button>
+          </div>
+          <button class="wishlist-btn-card" data-id="4" aria-label="Add to wishlist" title="Add to wishlist">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Linen Shirt</h3>
+          <p class="product-desc">The one you'll reach for every day.</p>
+          <div class="product-footer">
+            <span class="product-price">$195</span>
+            <button class="add-to-cart" data-id="4" data-name="Linen Shirt" data-price="195" aria-label="Add Linen Shirt to cart">Add</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== STATEMENT ===================== -->
+  <section class="statement-section" aria-labelledby="statement-text">
+    <div class="statement-container">
+      <p class="statement-word reveal-word" id="statement-text">Clothes</p>
+      <p class="statement-word reveal-word">are</p>
+      <p class="statement-word statement-word--italic reveal-word">temporary.</p>
+      <p class="statement-word reveal-word">Identity</p>
+      <p class="statement-word reveal-word">is</p>
+      <p class="statement-word statement-word--italic reveal-word">not.</p>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about" class="about-section reveal" aria-labelledby="about-heading">
+    <div class="about-container">
+      <div class="about-editorial-grid">
+        <div class="about-text-column">
+          <h2 id="about-heading" class="sr-only">About NUE</h2>
+          <div class="manifesto-wrap">
+            <div class="manifesto-line-container">
+              <span class="manifesto-line">We don't sell clothes.</span>
+            </div>
+            <div class="manifesto-line-container">
+              <span class="manifesto-line">We curate a way of living.</span>
+            </div>
+          </div>
+          <p class="about-editorial-paragraph">
+            NUE is built for those who choose quality over quantity, timelessness over trends, and identity over noise.
+          </p>
+        </div>
+        <div class="about-image-column">
+          <div class="about-image-inner">
+            <img src="assets/images/about_lifestyle.png" alt="NUE slow living minimal interior" class="about-editorial-img" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ESSENTIALS ===================== -->
+  <section id="essentials" class="essentials-section" aria-labelledby="essentials-heading">
+    <div class="section-header reveal">
+      <p class="section-label">Signature</p>
+      <h2 id="essentials-heading" class="section-title">The Essentials.</h2>
+      <p class="section-subtitle">Each piece. A decision. Not a trend.</p>
+    </div>
+    <div class="essentials-showcase">
+      <div class="essential-item reveal" id="e1">
+        <div class="essential-card" data-tilt>
+          <div class="essential-img-wrap">
+            <img src="assets/images/product1.png" alt="The Linen Coat essential" loading="lazy" />
+            <div class="essential-spotlight"></div>
+          </div>
+          <div class="essential-label">
+            <span class="essential-num">001</span>
+            <span class="essential-name">The Linen Coat</span>
+          </div>
+        </div>
+      </div>
+      <div class="essential-item reveal" id="e2">
+        <div class="essential-card" data-tilt>
+          <div class="essential-img-wrap">
+            <img src="assets/images/product3.png" alt="Knit Sweater essential" loading="lazy" />
+            <div class="essential-spotlight"></div>
+          </div>
+          <div class="essential-label">
+            <span class="essential-num">002</span>
+            <span class="essential-name">The Knit Sweater</span>
+          </div>
+        </div>
+      </div>
+      <div class="essential-item reveal" id="e3">
+        <div class="essential-card" data-tilt>
+          <div class="essential-img-wrap">
+            <img src="assets/images/product4.png" alt="Linen Shirt essential" loading="lazy" />
+            <div class="essential-spotlight"></div>
+          </div>
+          <div class="essential-label">
+            <span class="essential-num">003</span>
+            <span class="essential-name">The Linen Shirt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== LIFESTYLE ===================== -->
+  <section class="lifestyle-section" aria-labelledby="lifestyle-heading">
+    <div class="lifestyle-header reveal">
+      <p class="section-label">Living</p>
+      <h2 id="lifestyle-heading" class="lifestyle-title">Not a trend.<br/><em>A way of living.</em></h2>
+    </div>
+    <div class="lifestyle-grid">
+      <div class="lifestyle-block lifestyle-block--tall reveal">
+        <img src="assets/images/lifestyle.png" alt="Minimal lifestyle moment" loading="lazy" />
+        <div class="lifestyle-caption">
+          <span>Morning ritual.</span>
+        </div>
+      </div>
+      <div class="lifestyle-block reveal">
+        <img src="assets/images/about.png" alt="Quiet space editorial" loading="lazy" />
+        <div class="lifestyle-caption">
+          <span>Empty rooms.<br/>Full presence.</span>
+        </div>
+      </div>
+      <div class="lifestyle-block lifestyle-block--wide reveal">
+        <img src="assets/images/journal.png" alt="Creative workspace" loading="lazy" />
+        <div class="lifestyle-caption">
+          <span>The art of noticing.</span>
+        </div>
+      </div>
+    </div>
+    <div class="lifestyle-statement reveal">
+      <blockquote>
+        "Buy less. Choose well. Make it last."
+        <footer>— The NUE Principle</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ===================== JOURNAL ===================== -->
+  <section id="journal" class="journal-section" aria-labelledby="journal-heading">
+    <div class="section-header reveal">
+      <p class="section-label">Journal</p>
+      <h2 id="journal-heading" class="section-title">Ideas worth keeping.</h2>
+    </div>
+    <div class="journal-grid">
+      <article class="journal-card reveal">
+        <div class="journal-img-wrap">
+          <img src="assets/images/journal.png" alt="The Art of Minimal Living" loading="lazy" />
+        </div>
+        <div class="journal-content">
+          <p class="journal-date">June 2026</p>
+          <h3 class="journal-title">The Art of Minimal Living</h3>
+          <p class="journal-excerpt">On reducing the noise — in wardrobes, spaces, and lives. Why subtraction is the most radical act.</p>
+          <a href="#" class="journal-link" aria-label="Read The Art of Minimal Living">Read More</a>
+        </div>
+      </article>
+      <article class="journal-card reveal">
+        <div class="journal-img-wrap">
+          <img src="assets/images/about.png" alt="Why Less Lasts Longer" loading="lazy" />
+        </div>
+        <div class="journal-content">
+          <p class="journal-date">May 2026</p>
+          <h3 class="journal-title">Why Less Lasts Longer</h3>
+          <p class="journal-excerpt">The paradox of the minimal wardrobe: fewer pieces, more possibilities. An exploration of quality over quantity.</p>
+          <a href="#" class="journal-link" aria-label="Read Why Less Lasts Longer">Read More</a>
+        </div>
+      </article>
+      <article class="journal-card reveal">
+        <div class="journal-img-wrap">
+          <img src="assets/images/lifestyle.png" alt="Building a Timeless Wardrobe" loading="lazy" />
+        </div>
+        <div class="journal-content">
+          <p class="journal-date">April 2026</p>
+          <h3 class="journal-title">Building a Timeless Wardrobe</h3>
+          <p class="journal-excerpt">Not a capsule. Not a trend. A personal archive built one intentional piece at a time.</p>
+          <a href="#" class="journal-link" aria-label="Read Building a Timeless Wardrobe">Read More</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== SOCIAL WALL ===================== -->
+  <section class="social-section" aria-labelledby="social-heading">
+    <div class="social-header reveal">
+      <p class="section-label">Community</p>
+      <h2 id="social-heading" class="section-title">The World of NUE.</h2>
+    </div>
+    <div class="social-wall" aria-hidden="true">
+      <div class="social-wall-track" id="social-track">
+        <div class="social-item"><img src="assets/images/lifestyle.png" alt="" /><div class="social-overlay"><span>@nueliving</span></div></div>
+        <div class="social-item"><img src="assets/images/product3.png" alt="" /><div class="social-overlay"><span>@nuestyle</span></div></div>
+        <div class="social-item"><img src="assets/images/about.png" alt="" /><div class="social-overlay"><span>@nueminimal</span></div></div>
+        <div class="social-item"><img src="assets/images/journal.png" alt="" /><div class="social-overlay"><span>@nuemoment</span></div></div>
+        <div class="social-item"><img src="assets/images/product1.png" alt="" /><div class="social-overlay"><span>@nuewardrobe</span></div></div>
+        <div class="social-item"><img src="assets/images/product4.png" alt="" /><div class="social-overlay"><span>@nuelife</span></div></div>
+        <div class="social-item"><img src="assets/images/lifestyle.png" alt="" /><div class="social-overlay"><span>@nueliving</span></div></div>
+        <div class="social-item"><img src="assets/images/product2.png" alt="" /><div class="social-overlay"><span>@nueedits</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer" role="contentinfo" id="footer">
+    <div class="footer-container">
+      <div class="footer-brand-column">
+        <div class="footer-logo" data-analytics-footer="logo">NUE</div>
+        <div class="footer-statement-block">
+          <p class="footer-statement-line">Live simply.</p>
+          <p class="footer-statement-line">Wear intentionally.</p>
+        </div>
+      </div>
+      <div class="footer-journal-column">
+        <h3 class="footer-journal-title">Join the Journal.</h3>
+        <form class="footer-newsletter-form" id="newsletter-form" novalidate data-analytics="newsletter_signup">
+          <div class="footer-input-wrap">
+            <input type="email" class="footer-newsletter-input" id="newsletter-email" placeholder="Your email address" aria-label="Email address" required />
+            <button type="submit" class="footer-newsletter-submit" aria-label="Subscribe to journal">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </form>
+        <p class="footer-newsletter-note">We write rarely. Only when it matters.</p>
+      </div>
+    </div>
+    <div class="footer-bottom-bar">
+      <nav class="footer-links" aria-label="Footer links navigation">
+        <a href="#collection" class="footer-link" data-analytics-footer="Collection">Collection</a>
+        <a href="#essentials" class="footer-link" data-analytics-footer="Essentials">Essentials</a>
+        <a href="#about" class="footer-link" data-analytics-footer="About">About</a>
+        <a href="#journal" class="footer-link" data-analytics-footer="Journal">Journal</a>
+      </nav>
+      <div class="footer-social-links">
+        <a href="#" class="footer-social-link" data-analytics-footer="Instagram">Instagram</a>
+        <a href="#" class="footer-social-link" data-analytics-footer="Pinterest">Pinterest</a>
+      </div>
+      <div class="footer-copyright">
+        <p>© 2026 NUE. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================== QUICK VIEW MODAL ===================== -->
+  <div class="quickview-modal" id="quickview-modal" role="dialog" aria-modal="true" aria-label="Product quick view" aria-hidden="true">
+    <button class="modal-close" id="modal-close" aria-label="Close product view">✕</button>
+    <div class="quickview-inner">
+      <div class="quickview-gallery" id="qv-gallery"></div>
+      <div class="quickview-details" id="qv-details"></div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-overlay"></div>
+
+  <!-- ===================== LIFESTYLE MODE OVERLAY ===================== -->
+  <div class="lifestyle-mode-overlay" id="lifestyle-mode" aria-hidden="true">
+    <div class="lm-close-area">
+      <button class="lm-exit" id="lm-exit" aria-label="Exit lifestyle mode">Exit Experience</button>
+    </div>
+    <div class="lm-slide active" id="lm-s1">
+      <img src="assets/images/lifestyle.png" alt="Morning ritual" />
+      <div class="lm-text">
+        <p>Morning.</p>
+        <span>The ritual before the world begins.</span>
+      </div>
+    </div>
+    <div class="lm-slide" id="lm-s2">
+      <img src="assets/images/about.png" alt="Quiet moment" />
+      <div class="lm-text">
+        <p>Presence.</p>
+        <span>In an empty room. In a full life.</span>
+      </div>
+    </div>
+    <div class="lm-slide" id="lm-s3">
+      <img src="assets/images/product1.png" alt="The garment" />
+      <div class="lm-text">
+        <p>The coat.</p>
+        <span>Unstructured. Undyed. Unapologetic.</span>
+      </div>
+    </div>
+    <div class="lm-slide" id="lm-s4">
+      <img src="assets/images/journal.png" alt="Quiet creativity" />
+      <div class="lm-text">
+        <p>Creating.</p>
+        <span>With intention. Without noise.</span>
+      </div>
+    </div>
+    <div class="lm-nav">
+      <button class="lm-prev" id="lm-prev" aria-label="Previous slide">←</button>
+      <div class="lm-dots">
+        <span class="lm-dot active" data-slide="0"></span>
+        <span class="lm-dot" data-slide="1"></span>
+        <span class="lm-dot" data-slide="2"></span>
+        <span class="lm-dot" data-slide="3"></span>
+      </div>
+      <button class="lm-next" id="lm-next" aria-label="Next slide">→</button>
+    </div>
+  </div>
+
+  <!-- ===================== TOAST NOTIFICATION ===================== -->
+  <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
