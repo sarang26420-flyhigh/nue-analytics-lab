@@ -1,5 +1,5 @@
 /**
- * NUE — We don't sell, but lifestyle.
+ * NUE — A Quieter Way To Dress
  * Premium Minimal Fashion Website JavaScript
  */
 
@@ -18,10 +18,10 @@ const state = {
 };
 
 const products = [
-  { id: 1, name: 'The Linen Coat',   price: 490, img: 'assets/images/product1.png', category: 'Outerwear', desc: 'Unstructured, undyed, unapologetic. Our flagship coat is cut from heavyweight organic linen in its most natural state.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
-  { id: 2, name: 'Wide Trousers',    price: 320, img: 'assets/images/product2.png', category: 'Bottoms',   desc: 'Architecture for the body. A wide-leg silhouette cut in dense charcoal fabric that holds its shape beautifully over years.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '80% Wool, 20% Silk. Dry clean only. Made in Italy.' },
-  { id: 3, name: 'Knit Sweater',     price: 280, img: 'assets/images/product3.png', category: 'Tops',      desc: 'Stone grey. Silence woven in. A densely knit, relaxed-fit sweater made from extra-fine merino wool.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Extra-Fine Merino Wool. Hand wash cold. Made in Scotland.' },
-  { id: 4, name: 'Linen Shirt',      price: 195, img: 'assets/images/product4.png', category: 'Tops',      desc: 'The one you\'ll reach for every day. A slightly oversized shirt in natural ivory linen with intentional, minimal construction.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Machine wash on gentle. Made in Portugal.' },
+  { id: 1, name: 'The Linen Coat',   price: 490, img: 'assets/images/product1.webp', category: 'Outerwear', desc: 'Unstructured, undyed, unapologetic. Our flagship coat is cut from heavyweight organic linen in its most natural state.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
+  { id: 2, name: 'Wide Trousers',    price: 320, img: 'assets/images/product2.webp', category: 'Bottoms',   desc: 'Architecture for the body. A wide-leg silhouette cut in dense charcoal fabric that holds its shape beautifully over years.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '80% Wool, 20% Silk. Dry clean only. Made in Italy.' },
+  { id: 3, name: 'Knit Sweater',     price: 280, img: 'assets/images/product3.webp', category: 'Tops',      desc: 'Stone grey. Silence woven in. A densely knit, relaxed-fit sweater made from extra-fine merino wool.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Extra-Fine Merino Wool. Hand wash cold. Made in Scotland.' },
+  { id: 4, name: 'Linen Shirt',      price: 195, img: 'assets/images/product4.webp', category: 'Tops',      desc: 'The one you\'ll reach for every day. A slightly oversized shirt in natural ivory linen with intentional, minimal construction.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Machine wash on gentle. Made in Portugal.' },
 ];
 
 /* ─── Utility Functions ──────────────────────────────────── */
@@ -56,23 +56,28 @@ function showToast(message) {
 
   let mouseX = -100, mouseY = -100;
   let followerX = -100, followerY = -100;
-  let rafId;
+  let active = false;
 
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    cursor.style.left = mouseX + 'px';
-    cursor.style.top  = mouseY + 'px';
-  });
+    if (!active) {
+      active = true;
+      requestAnimationFrame(animateFollower);
+    }
+  }, { passive: true });
 
   function animateFollower() {
     followerX += (mouseX - followerX) * 0.12;
     followerY += (mouseY - followerY) * 0.12;
-    follower.style.left = followerX + 'px';
-    follower.style.top  = followerY + 'px';
-    rafId = requestAnimationFrame(animateFollower);
+
+    cursor.style.setProperty('--cursor-x', `${mouseX}px`);
+    cursor.style.setProperty('--cursor-y', `${mouseY}px`);
+    follower.style.setProperty('--follower-x', `${followerX}px`);
+    follower.style.setProperty('--follower-y', `${followerY}px`);
+
+    requestAnimationFrame(animateFollower);
   }
-  animateFollower();
 
   // Hover states
   document.addEventListener('mouseover', (e) => {
@@ -81,16 +86,16 @@ function showToast(message) {
       cursor.classList.add('is-hovering');
       follower.classList.add('is-hovering');
     }
-  });
+  }, { passive: true });
   document.addEventListener('mouseout', (e) => {
     const target = e.target.closest('a, button, [data-tilt], .product-card, .journal-card, .lifestyle-block, .social-item');
     if (target) {
       cursor.classList.remove('is-hovering');
       follower.classList.remove('is-hovering');
     }
-  });
-  document.addEventListener('mousedown', () => cursor.classList.add('is-clicking'));
-  document.addEventListener('mouseup',   () => cursor.classList.remove('is-clicking'));
+  }, { passive: true });
+  document.addEventListener('mousedown', () => cursor.classList.add('is-clicking'), { passive: true });
+  document.addEventListener('mouseup',   () => cursor.classList.remove('is-clicking'), { passive: true });
 })();
 
 /* ─── Navigation ──────────────────────────────────────────── */
@@ -102,14 +107,21 @@ function showToast(message) {
 
   // Scroll state
   let lastScroll = 0;
+  let navTicking = false;
   window.addEventListener('scroll', () => {
-    const current = window.scrollY;
-    if (current > 60) {
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
+    if (!navTicking) {
+      requestAnimationFrame(() => {
+        const current = window.scrollY;
+        if (current > 60) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+        lastScroll = current;
+        navTicking = false;
+      });
+      navTicking = true;
     }
-    lastScroll = current;
   }, { passive: true });
 
   // Mobile toggle
@@ -499,10 +511,12 @@ function initTiltCards() {
     });
   });
 
-  wishlistBtn.addEventListener('click', () => {
-    showToast(`Wishlist — ${state.wishlist.length} item${state.wishlist.length !== 1 ? 's' : ''}`);
-  });
-})();
+    if (wishlistBtn) {
+      wishlistBtn.addEventListener('click', () => {
+        showToast(`Wishlist — ${state.wishlist.length} item${state.wishlist.length !== 1 ? 's' : ''}`);
+      });
+    }
+  })();
 
 /* ─── Quick View Modal ───────────────────────────────────── */
 function openQuickView(id) {
@@ -572,14 +586,22 @@ function openQuickView(id) {
   const close   = $('#modal-close');
 
   function closeModal() {
-    modal.classList.remove('open');
-    overlay.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+    if (overlay) {
+      overlay.classList.remove('open');
+    }
     document.body.classList.remove('no-scroll');
   }
 
-  close.addEventListener('click', closeModal);
-  overlay.addEventListener('click', closeModal);
+  if (close) {
+    close.addEventListener('click', closeModal);
+  }
+  if (overlay) {
+    overlay.addEventListener('click', closeModal);
+  }
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
   });
@@ -588,7 +610,18 @@ function openQuickView(id) {
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('.quick-view-btn');
     if (!btn) return;
-    const id = parseInt(btn.dataset.id);
+    e.preventDefault(); // Prevent navigating to product.html when opening modal
+    const card = btn.closest('.product-card');
+    const idAttr = btn.dataset.id || (card ? card.dataset.id : null);
+    let id = parseInt(idAttr);
+    if (isNaN(id)) {
+      // Fallback: parse from href
+      const href = btn.getAttribute('href');
+      if (href) {
+        const urlParams = new URLSearchParams(href.split('?')[1]);
+        id = parseInt(urlParams.get('id'));
+      }
+    }
     openQuickView(id);
   });
 })();
@@ -755,18 +788,50 @@ function openQuickView(id) {
   const magnetTargets = $$('.btn-primary, .hero-cta, .lifestyle-mode-btn');
 
   magnetTargets.forEach(target => {
+    let rect = null;
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+    let isHovered = false;
+    let rafId = null;
+
+    target.addEventListener('mouseenter', () => {
+      rect = target.getBoundingClientRect();
+      isHovered = true;
+      if (!rafId) {
+        animate();
+      }
+    }, { passive: true });
+
     target.addEventListener('mousemove', (e) => {
-      const rect = target.getBoundingClientRect();
-      const cx   = rect.left + rect.width  / 2;
-      const cy   = rect.top  + rect.height / 2;
-      const dx   = (e.clientX - cx) * 0.22;
-      const dy   = (e.clientY - cy) * 0.22;
-      target.style.transform = `translate(${dx}px, ${dy}px)`;
-    });
+      if (!rect) rect = target.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      targetX = (e.clientX - cx) * 0.22;
+      targetY = (e.clientY - cy) * 0.22;
+    }, { passive: true });
 
     target.addEventListener('mouseleave', () => {
-      target.style.transform = '';
-    });
+      isHovered = false;
+      targetX = 0;
+      targetY = 0;
+      rect = null;
+    }, { passive: true });
+
+    function animate() {
+      if (!isHovered && Math.abs(currentX) < 0.01 && Math.abs(currentY) < 0.01) {
+        target.style.transform = '';
+        currentX = 0;
+        currentY = 0;
+        rafId = null;
+        return;
+      }
+      
+      currentX += (targetX - currentX) * 0.15;
+      currentY += (targetY - currentY) * 0.15;
+      target.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
+      
+      rafId = requestAnimationFrame(animate);
+    }
   });
 })();
 
@@ -874,20 +939,137 @@ function openQuickView(id) {
   // 6. Scroll depth tracking (25%, 50%, 75%, 90%)
   const thresholds = [25, 50, 75, 90];
   const trackedScrolls = {};
+  let scrollDepthTicking = false;
   window.addEventListener('scroll', () => {
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    if (docHeight <= 0) return;
-    const progress = Math.round((window.scrollY / docHeight) * 100);
-    thresholds.forEach(t => {
-      if (progress >= t && !trackedScrolls[t]) {
-        trackedScrolls[t] = true;
-        window.dataLayer.push({
-          event: 'scroll_depth',
-          scroll_percentage: t
-        });
-      }
-    });
+    if (!scrollDepthTicking) {
+      requestAnimationFrame(() => {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight > 0) {
+          const progress = Math.round((window.scrollY / docHeight) * 100);
+          thresholds.forEach(t => {
+            if (progress >= t && !trackedScrolls[t]) {
+              trackedScrolls[t] = true;
+              window.dataLayer.push({
+                event: 'scroll_depth',
+                scroll_percentage: t
+              });
+            }
+          });
+        }
+        scrollDepthTicking = false;
+      });
+      scrollDepthTicking = true;
+    }
   }, { passive: true });
+})();
+
+/* ─── Product Page Dynamic Injection ─────────────────────── */
+(function initProductPage() {
+  const container = $('#product-detail-container');
+  if (!container) return; // Not on the product details page
+
+  // Parse product ID from URL
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get('id')) || 1;
+  const product = products.find(p => p.id === id);
+
+  if (!product) {
+    container.innerHTML = `
+      <div style="padding: 10rem 2rem; text-align: center;">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem;">Product Not Found</h2>
+        <a href="index.html" class="btn-primary" style="display: inline-block;">Return to Collection</a>
+      </div>
+    `;
+    return;
+  }
+
+  // GA4 tracking for view_item on load of product details page
+  window.dataLayer.push({
+    event: 'view_item',
+    ecommerce: {
+      currency: 'USD',
+      value: product.price,
+      items: [{
+        item_id: product.id.toString(),
+        item_name: product.name,
+        price: product.price,
+        item_category: product.category,
+        quantity: 1
+      }]
+    }
+  });
+
+  // Inject product details
+  const nameEl = $('#p-name');
+  const priceEl = $('#p-price');
+  const descEl = $('#p-desc');
+  const materialEl = $('#p-material');
+  const galleryEl = $('#p-gallery');
+  const addToCartBtn = $('#p-add-btn');
+  const wishlistBtn = $('#p-wishlist-btn');
+
+  if (nameEl) nameEl.textContent = product.name;
+  if (priceEl) priceEl.textContent = `$${product.price}`;
+  if (descEl) descEl.textContent = product.desc;
+  if (materialEl) materialEl.textContent = product.material;
+  if (galleryEl) {
+    galleryEl.innerHTML = `<img src="${product.img}" alt="${product.name}" class="product-detail-img" loading="eager" />`;
+  }
+  
+  if (addToCartBtn) {
+    addToCartBtn.dataset.id = product.id;
+    addToCartBtn.dataset.name = product.name;
+    addToCartBtn.dataset.price = product.price;
+  }
+
+  if (wishlistBtn) {
+    wishlistBtn.dataset.id = product.id;
+    if (state.wishlist.includes(product.id)) {
+      wishlistBtn.classList.add('wishlisted');
+    }
+  }
+
+  // Sizes selection
+  const sizesContainer = $('#p-sizes');
+  if (sizesContainer) {
+    sizesContainer.innerHTML = product.sizes.map((s, i) => `
+      <button class="size-btn${i === 1 ? ' active' : ''}" data-size="${s}">${s}</button>
+    `).join('');
+
+    sizesContainer.querySelectorAll('.size-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        sizesContainer.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  }
+
+  // Related products (excluding active one)
+  const relatedGrid = $('#related-grid');
+  if (relatedGrid) {
+    const related = products.filter(p => p.id !== product.id);
+    relatedGrid.innerHTML = related.map(p => `
+      <article class="product-card reveal" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-category="${p.category}" data-analytics-product-id="${p.id}">
+        <div class="product-image-wrap">
+          <img src="${p.img}" alt="${p.name} — NUE" class="product-img" loading="lazy" />
+          <div class="product-overlay">
+            <a href="product.html?id=${p.id}" class="quick-view-btn" data-id="${p.id}" aria-label="View ${p.name}">View</a>
+          </div>
+          <button class="wishlist-btn-card${state.wishlist.includes(p.id) ? ' wishlisted' : ''}" data-id="${p.id}" aria-label="Add to wishlist" title="Add to wishlist">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="product-info">
+          <a href="product.html?id=${p.id}"><h3 class="product-name">${p.name}</h3></a>
+          <p class="product-desc">${p.category}</p>
+          <div class="product-footer">
+            <span class="product-price">$${p.price}</span>
+            <button class="add-to-cart" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" aria-label="Add ${p.name} to cart">Add</button>
+          </div>
+        </div>
+      </article>
+    `).join('');
+  }
 })();
 
 /* ─── Debug helper (dev only) ─────────────────────────────── */
