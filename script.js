@@ -18,10 +18,10 @@ const state = {
 };
 
 const products = [
-  { id: 1, name: 'The Linen Coat',   price: 490, img: 'assets/images/product1.webp', category: 'Outerwear', desc: 'Unstructured, undyed, unapologetic. Our flagship coat is cut from heavyweight organic linen in its most natural state.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
-  { id: 2, name: 'Wide Trousers',    price: 320, img: 'assets/images/product2.webp', category: 'Bottoms',   desc: 'Architecture for the body. A wide-leg silhouette cut in dense charcoal fabric that holds its shape beautifully over years.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '80% Wool, 20% Silk. Dry clean only. Made in Italy.' },
-  { id: 3, name: 'Knit Sweater',     price: 280, img: 'assets/images/product3.webp', category: 'Tops',      desc: 'Stone grey. Silence woven in. A densely knit, relaxed-fit sweater made from extra-fine merino wool.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Extra-Fine Merino Wool. Hand wash cold. Made in Scotland.' },
-  { id: 4, name: 'Linen Shirt',      price: 195, img: 'assets/images/product4.webp', category: 'Tops',      desc: 'The one you\'ll reach for every day. A slightly oversized shirt in natural ivory linen with intentional, minimal construction.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Machine wash on gentle. Made in Portugal.' },
+  { id: 1, name: 'The Essential Set', price: 42000, img: 'assets/images/women_linen.webp', category: "Women's Collection", desc: 'A matching set of refined ease, cut from unbleached organic linen for natural texture and simple elegance.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
+  { id: 2, name: 'The Coastal Trouser', price: 28000, img: 'assets/images/yacht.webp', category: "Men's Collection", desc: 'Tailored for leisure. A structured yet relaxed trouser cut from breathable linen, perfect for seaside afternoons.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '80% Organic Linen, 20% Silk. Dry clean only. Made in Italy.' },
+  { id: 3, name: 'The Olive Shirt', price: 24500, img: 'assets/images/forest.webp', category: "Men's Collection", desc: 'An earth-toned essential crafted in olive linen, featuring a relaxed drape and clean, minimal stitching.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Hand wash cold. Made in Portugal.' },
+  { id: 4, name: 'The Linen Shirt', price: 18000, img: 'assets/images/product4.webp', category: "Collection", desc: 'The cornerstone of a timeless wardrobe, cut from light ivory linen with a clean, classic collar.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Machine wash on gentle. Made in Portugal.' },
 ];
 
 /* ─── Utility Functions ──────────────────────────────────── */
@@ -320,7 +320,7 @@ function initTiltCards() {
     );
 
     if (matches.length === 0) {
-      results.innerHTML = '<p style="color:var(--stone);font-size:0.8rem;letter-spacing:0.1em;">No results found.</p>';
+      results.innerHTML = '<p style="color:var(--stone);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;">No pieces found in the archive.</p>';
       return;
     }
 
@@ -331,7 +331,7 @@ function initTiltCards() {
         <img src="${p.img}" alt="${p.name}" style="width:50px;height:62px;object-fit:cover;flex-shrink:0;"/>
         <div>
           <p style="font-family:var(--font-serif);font-size:1rem;">${p.name}</p>
-          <p style="font-size:0.75rem;color:var(--stone);">$${p.price} — ${p.category}</p>
+          <p style="font-size:0.75rem;color:var(--stone);">₹${p.price.toLocaleString('en-IN')} — ${p.category}</p>
         </div>
       `;
       el.addEventListener('click', () => {
@@ -381,13 +381,13 @@ function initTiltCards() {
     // Update count badge
     cartCount.textContent = count;
     cartCount.classList.toggle('visible', count > 0);
-    cartTotal.textContent = '$' + total;
+    cartTotal.textContent = '₹' + total.toLocaleString('en-IN');
 
     if (state.cart.length === 0) {
       cartItems.innerHTML = `
         <div class="cart-empty">
-          <p>Your cart is empty.</p>
-          <span>Begin curating your wardrobe.</span>
+          <p>Your selection is empty.</p>
+          <span>Begin curating your personal archive.</span>
         </div>`;
       cartFooter.style.display = 'none';
       return;
@@ -399,7 +399,7 @@ function initTiltCards() {
         <img src="${item.img}" alt="${item.name}" class="cart-item-img" />
         <div class="cart-item-details">
           <p class="cart-item-name">${item.name}</p>
-          <p class="cart-item-price">$${item.price} &times; ${item.qty}</p>
+          <p class="cart-item-price">₹${item.price.toLocaleString('en-IN')} &times; ${item.qty}</p>
           <button class="cart-item-remove" data-id="${item.id}" aria-label="Remove ${item.name}">Remove</button>
         </div>
       </div>
@@ -465,9 +465,12 @@ function initTiltCards() {
   });
 
   // Checkout
-  $('#checkout-btn').addEventListener('click', () => {
-    showToast('Checkout coming soon — stay minimal.');
-  });
+  const checkoutBtn = $('#checkout-btn');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+      showToast('Our checkout experience is currently private. Wear intentionally.');
+    });
+  }
 
   renderCart();
 })();
@@ -549,7 +552,7 @@ function openQuickView(id) {
   details.innerHTML = `
     <p class="qv-category">${product.category}</p>
     <h3 class="qv-name">${product.name}</h3>
-    <p class="qv-price">$${product.price}</p>
+    <p class="qv-price">₹${product.price.toLocaleString('en-IN')}</p>
     <p class="qv-desc">${product.desc}</p>
     <div>
       <p class="qv-label">Select Size</p>
@@ -1009,7 +1012,7 @@ function openQuickView(id) {
   const wishlistBtn = $('#p-wishlist-btn');
 
   if (nameEl) nameEl.textContent = product.name;
-  if (priceEl) priceEl.textContent = `$${product.price}`;
+  if (priceEl) priceEl.textContent = `₹${product.price.toLocaleString('en-IN')}`;
   if (descEl) descEl.textContent = product.desc;
   if (materialEl) materialEl.textContent = product.material;
   if (galleryEl) {
@@ -1063,7 +1066,7 @@ function openQuickView(id) {
           <a href="product.html?id=${p.id}"><h3 class="product-name">${p.name}</h3></a>
           <p class="product-desc">${p.category}</p>
           <div class="product-footer">
-            <span class="product-price">$${p.price}</span>
+            <span class="product-price">₹${p.price.toLocaleString('en-IN')}</span>
             <button class="add-to-cart" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" aria-label="Add ${p.name} to cart">Add</button>
           </div>
         </div>
