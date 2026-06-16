@@ -8,7 +8,7 @@
 // GTM/GA4 dataLayer Initialization
 window.dataLayer = window.dataLayer || [];
 
-/* ─── State ──────────────────────────────────────────────── */
+/* ─── State & Persistence ─────────────────────────────────── */
 const state = {
   cart: [],
   wishlist: [],
@@ -16,6 +16,23 @@ const state = {
   currentSlide: 0,
   totalSlides: 4,
 };
+
+function saveState() {
+  localStorage.setItem('nue_cart', JSON.stringify(state.cart));
+  localStorage.setItem('nue_wishlist', JSON.stringify(state.wishlist));
+}
+
+function loadState() {
+  try {
+    const savedCart = localStorage.getItem('nue_cart');
+    if (savedCart) state.cart = JSON.parse(savedCart);
+    const savedWishlist = localStorage.getItem('nue_wishlist');
+    if (savedWishlist) state.wishlist = JSON.parse(savedWishlist);
+  } catch (e) {
+    console.error('Error loading state from localStorage:', e);
+  }
+}
+loadState();
 
 const products = [
   { id: 1, name: 'The Essential Set', price: 42000, img: 'assets/images/women_linen.webp', category: "Women's Linen Collection", desc: 'A matching set of refined ease, cut from unbleached organic linen for natural texture and simple elegance.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
@@ -385,9 +402,13 @@ function initTiltCards() {
     const total = state.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
     // Update count badge
-    cartCount.textContent = count;
-    cartCount.classList.toggle('visible', count > 0);
-    cartTotal.textContent = '₹' + total.toLocaleString('en-IN');
+    if (cartCount) {
+      cartCount.textContent = count;
+      cartCount.classList.toggle('visible', count > 0);
+    }
+    if (cartTotal) {
+      cartTotal.textContent = '₹' + total.toLocaleString('en-IN');
+    }
 
     if (state.cart.length === 0) {
       cartItems.innerHTML = `
@@ -405,18 +426,64 @@ function initTiltCards() {
         <img src="${item.img}" alt="${item.name}" class="cart-item-img" />
         <div class="cart-item-details">
           <p class="cart-item-name">${item.name}</p>
-          <p class="cart-item-price">₹${item.price.toLocaleString('en-IN')} &times; ${item.qty}</p>
-          <button class="cart-item-remove" data-id="${item.id}" aria-label="Remove ${item.name}">Remove</button>
+          <div class="cart-item-qty-row">
+            <div class="qty-adjuster">
+              <button class="qty-btn qty-minus" data-id="${item.id}">−</button>
+              <span class="qty-val">${item.qty}</span>
+              <button class="qty-btn qty-plus" data-id="${item.id}">+</button>
+            </div>
+            <button class="cart-item-remove" data-id="${item.id}" aria-label="Remove ${item.name}">Remove</button>
+          </div>
+          <p class="cart-item-price" style="margin-top:0.4rem;font-size:0.75rem;">₹${(item.price * item.qty).toLocaleString('en-IN')}</p>
         </div>
       </div>
     `).join('');
+
+    // Quantity buttons click bindings
+    cartItems.querySelectorAll('.qty-minus').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        const item = state.cart.find(i => i.id === id);
+        if (item) {
+          if (item.qty > 1) {
+            item.qty--;
+          } else {
+            state.cart = state.cart.filter(i => i.id !== id);
+          }
+          saveState();
+          renderCart();
+          if (typeof renderCartPage === 'function' && $('#cart-page-items-container')) {
+            renderCartPage();
+          }
+        }
+      });
+    });
+
+    cartItems.querySelectorAll('.qty-plus').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        const item = state.cart.find(i => i.id === id);
+        if (item) {
+          item.qty++;
+          saveState();
+          renderCart();
+          if (typeof renderCartPage === 'function' && $('#cart-page-items-container')) {
+            renderCartPage();
+          }
+        }
+      });
+    });
 
     // Remove buttons
     cartItems.querySelectorAll('.cart-item-remove').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = parseInt(btn.dataset.id);
         state.cart = state.cart.filter(i => i.id !== id);
+        saveState();
         renderCart();
+        if (typeof renderCartPage === 'function' && $('#cart-page-items-container')) {
+          renderCartPage();
+        }
       });
     });
   }
@@ -438,13 +505,14 @@ function initTiltCards() {
       state.cart.push({ id, name, price, qty: 1, img: product?.img || '' });
     }
 
+    saveState();
     renderCart();
 
     // GA4 eCommerce tracking for add_to_cart
     window.dataLayer.push({
       event: 'add_to_cart',
       ecommerce: {
-        currency: 'USD',
+        currency: 'INR',
         value: price,
         items: [{
           item_id: id.toString(),
@@ -460,7 +528,7 @@ function initTiltCards() {
     btn.textContent = '✓';
     btn.style.opacity = '0.5';
     setTimeout(() => {
-      btn.textContent = 'Add';
+      btn.textContent = btn.classList.contains('p-add-button') ? 'Add to Selection' : 'Add';
       btn.style.opacity = '';
     }, 1400);
 
@@ -469,14 +537,6 @@ function initTiltCards() {
     // Open cart briefly
     openCart();
   });
-
-  // Checkout
-  const checkoutBtn = $('#checkout-btn');
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', () => {
-      showToast('Our checkout experience is currently private. Wear intentionally.');
-    });
-  }
 
   renderCart();
 })();
@@ -503,11 +563,13 @@ function initTiltCards() {
       showToast(`${product?.name} added to wishlist`);
     }
 
+    saveState();
+
     // GA4 eCommerce tracking for add_to_wishlist
     window.dataLayer.push({
       event: isAdding ? 'add_to_wishlist' : 'remove_from_wishlist',
       ecommerce: {
-        currency: 'USD',
+        currency: 'INR',
         value: product?.price || 0,
         items: [{
           item_id: id.toString(),
@@ -520,12 +582,12 @@ function initTiltCards() {
     });
   });
 
-    if (wishlistBtn) {
-      wishlistBtn.addEventListener('click', () => {
-        showToast(`Wishlist — ${state.wishlist.length} item${state.wishlist.length !== 1 ? 's' : ''}`);
-      });
-    }
-  })();
+  if (wishlistBtn) {
+    wishlistBtn.addEventListener('click', () => {
+      showToast(`Wishlist — ${state.wishlist.length} item${state.wishlist.length !== 1 ? 's' : ''}`);
+    });
+  }
+})();
 
 /* ─── Quick View Modal ───────────────────────────────────── */
 function openQuickView(id) {
@@ -1126,4 +1188,332 @@ if (window.location.search.includes('debug')) {
       });
     });
   });
+})();
+
+/* ─── Phase 3 dedicated Pages Controller ───────────────────── */
+(function initPhase3Pages() {
+  const cartContainer = $('#cart-page-items-container');
+  const checkoutContainer = $('#checkout-container');
+  const inquiriesContainer = $('#inquiries-container');
+
+  if (cartContainer) {
+    window.renderCartPage = function() {
+      const total = state.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      if (state.cart.length === 0) {
+        cartContainer.innerHTML = `
+          <div style="padding: 6rem 2rem; text-align: center; background: var(--beige); border-radius: 1px; margin-top: 2rem;">
+            <p style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--charcoal);">Your selection is empty.</p>
+            <a href="index.html#collection" class="btn-primary" style="display: inline-block; padding: 1rem 2rem; letter-spacing: 0.2em; font-size: 0.72rem; text-transform: uppercase; color: var(--ivory); background: var(--charcoal);">Return to Collection</a>
+          </div>
+        `;
+        return;
+      }
+
+      cartContainer.innerHTML = `
+        <div class="cart-page-grid">
+          <div class="cart-page-items">
+            <div class="cart-table-header">
+              <span>Garment</span>
+              <span style="text-align:center;">Quantity</span>
+              <span style="text-align:right; padding-right:1rem;">Subtotal</span>
+            </div>
+            ${state.cart.map(item => {
+              const product = products.find(p => p.id === item.id);
+              return `
+                <div class="cart-page-item">
+                  <div class="cart-page-item-info">
+                    <img src="${item.img}" alt="${item.name}" class="cart-page-item-img" />
+                    <div class="cart-page-item-meta">
+                      <h3 class="item-name">${item.name}</h3>
+                      <p class="item-category">${product?.category || ''}</p>
+                      <button class="item-remove-link page-item-remove" data-id="${item.id}">Remove</button>
+                    </div>
+                  </div>
+                  <div style="display:flex; justify-content:center;">
+                    <div class="qty-adjuster">
+                      <button class="qty-btn page-qty-minus" data-id="${item.id}">−</button>
+                      <span class="qty-val">${item.qty}</span>
+                      <button class="qty-btn page-qty-plus" data-id="${item.id}">+</button>
+                    </div>
+                  </div>
+                  <div class="cart-page-item-price" style="text-align:right; padding-right:1rem;">
+                    ₹${(item.price * item.qty).toLocaleString('en-IN')}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <div class="order-summary-card">
+            <h2 class="summary-title">Order Summary</h2>
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span>₹${total.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span>Complimentary</span>
+            </div>
+            <div class="summary-row">
+              <span>Duties & Taxes</span>
+              <span>Complimentary</span>
+            </div>
+            <div class="summary-row total-row">
+              <span>Total Request Value</span>
+              <span>₹${total.toLocaleString('en-IN')}</span>
+            </div>
+            <a href="checkout.html" class="btn-primary" style="display:block; text-align:center; padding: 1.1rem 0; letter-spacing: 0.2em; font-size: 0.72rem; text-transform: uppercase; color: var(--ivory); background: var(--charcoal);">Proceed to Checkout</a>
+          </div>
+        </div>
+      `;
+
+      // Bind Page Qty Adjustment buttons
+      cartContainer.querySelectorAll('.page-qty-minus').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = parseInt(btn.dataset.id);
+          const item = state.cart.find(i => i.id === id);
+          if (item) {
+            if (item.qty > 1) {
+              item.qty--;
+            } else {
+              state.cart = state.cart.filter(i => i.id !== id);
+            }
+            saveState();
+            renderCartPage();
+            renderCart();
+          }
+        });
+      });
+
+      cartContainer.querySelectorAll('.page-qty-plus').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = parseInt(btn.dataset.id);
+          const item = state.cart.find(i => i.id === id);
+          if (item) {
+            item.qty++;
+            saveState();
+            renderCartPage();
+            renderCart();
+          }
+        });
+      });
+
+      cartContainer.querySelectorAll('.page-item-remove').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = parseInt(btn.dataset.id);
+          state.cart = state.cart.filter(i => i.id !== id);
+          saveState();
+          renderCartPage();
+          renderCart();
+        });
+      });
+    };
+    renderCartPage();
+  }
+
+  if (checkoutContainer) {
+    const renderCheckoutPage = function() {
+      const total = state.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      if (state.cart.length === 0) {
+        checkoutContainer.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 6rem 2rem; text-align: center; background: var(--beige); border-radius: 1px; width:100%;">
+            <p style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--charcoal);">Your selection is empty.</p>
+            <a href="index.html#collection" class="btn-primary" style="display: inline-block; padding: 1rem 2rem; letter-spacing: 0.2em; font-size: 0.72rem; text-transform: uppercase; color: var(--ivory); background: var(--charcoal);">Return to Collection</a>
+          </div>
+        `;
+        return;
+      }
+
+      checkoutContainer.innerHTML = `
+        <div class="checkout-form-wrapper">
+          <form class="checkout-form" id="checkout-form-element">
+            <div class="form-group">
+              <label for="c-name">Full Name</label>
+              <input type="text" id="c-name" class="form-input" placeholder="e.g., Alexander Cole" required />
+            </div>
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="c-email">Email Address</label>
+                <input type="email" id="c-email" class="form-input" placeholder="e.g., alex@minimal.com" required />
+              </div>
+              <div class="form-group">
+                <label for="c-phone">Phone Number</label>
+                <input type="tel" id="c-phone" class="form-input" placeholder="e.g., +91 98765 43210" required />
+              </div>
+            </div>
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="c-city">City</label>
+                <input type="text" id="c-city" class="form-input" placeholder="e.g., Mumbai" required />
+              </div>
+              <div class="form-group">
+                <label for="c-state">State</label>
+                <input type="text" id="c-state" class="form-input" placeholder="e.g., Maharashtra" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="c-notes">Notes / Special Requests</label>
+              <textarea id="c-notes" class="form-textarea" placeholder="Specify any sizing adjustments, custom tailoring requests, or delivery preferences..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary full-width" style="padding:1.2rem 0; letter-spacing: 0.25em; text-transform: uppercase; font-size: 0.72rem; color: var(--ivory); background: var(--charcoal); margin-top:1rem; border:none; cursor:pointer;">
+              Place Order Request
+            </button>
+          </form>
+        </div>
+
+        <div class="order-summary-card">
+          <h2 class="summary-title">Summary</h2>
+          <div class="checkout-summary-items">
+            ${state.cart.map(item => `
+              <div class="checkout-summary-item">
+                <span class="checkout-item-name">${item.name} <span class="checkout-item-qty">&times; ${item.qty}</span></span>
+                <span class="checkout-item-price">₹${(item.price * item.qty).toLocaleString('en-IN')}</span>
+              </div>
+            `).join('')}
+          </div>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>₹${total.toLocaleString('en-IN')}</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>Complimentary</span>
+          </div>
+          <div class="summary-row total-row">
+            <span>Total Request Value</span>
+            <span>₹${total.toLocaleString('en-IN')}</span>
+          </div>
+        </div>
+      `;
+
+      // Handle checkout submission
+      const checkoutForm = $('#checkout-form-element');
+      checkoutForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const customerName = $('#c-name').value;
+        const customerEmail = $('#c-email').value;
+        const customerPhone = $('#c-phone').value;
+        const customerCity = $('#c-city').value;
+        const customerState = $('#c-state').value;
+        const customerNotes = $('#c-notes').value || 'None';
+
+        const newInquiry = {
+          id: Date.now(),
+          date: new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+          name: customerName,
+          email: customerEmail,
+          phone: customerPhone,
+          city: customerCity,
+          state: customerState,
+          notes: customerNotes,
+          items: state.cart.map(item => `${item.name} (Qty: ${item.qty}, Price: ₹${item.price.toLocaleString('en-IN')})`).join(', '),
+          total: state.cart.reduce((sum, item) => sum + item.price * item.qty, 0)
+        };
+
+        // Save to localStorage
+        try {
+          const savedInquiries = localStorage.getItem('nue_inquiries');
+          const inquiriesList = savedInquiries ? JSON.parse(savedInquiries) : [];
+          inquiriesList.push(newInquiry);
+          localStorage.setItem('nue_inquiries', JSON.stringify(inquiriesList));
+        } catch (err) {
+          console.error('Error saving inquiries:', err);
+        }
+
+        // Trigger GA4 eCommerce purchase tracking log
+        window.dataLayer.push({
+          event: 'purchase_request',
+          inquiry_id: newInquiry.id,
+          customer_city: customerCity,
+          value: newInquiry.total,
+          items: state.cart.map(item => ({
+            item_name: item.name,
+            price: item.price,
+            quantity: item.qty
+          }))
+        });
+
+        // Clear Cart
+        state.cart = [];
+        saveState();
+        renderCart();
+
+        // Redirect
+        window.location.href = 'success.html';
+      });
+    };
+    renderCheckoutPage();
+  }
+
+  if (inquiriesContainer) {
+    const renderInquiriesPage = function() {
+      let inquiries = [];
+      try {
+        const savedInquiries = localStorage.getItem('nue_inquiries');
+        if (savedInquiries) inquiries = JSON.parse(savedInquiries);
+      } catch (err) {
+        console.error('Error parsing inquiries:', err);
+      }
+
+      if (inquiries.length === 0) {
+        inquiriesContainer.innerHTML = `
+          <div class="inquiries-empty-state" style="background:var(--beige); padding:5rem 2rem; text-align:center; border-radius:1px; margin-top:2rem;">
+            <p style="font-family:var(--font-serif); font-size:1.3rem; color:var(--stone);">No customer inquiries recorded in the archive yet.</p>
+          </div>
+        `;
+        return;
+      }
+
+      inquiriesContainer.innerHTML = `
+        <div class="inquiries-meta-row">
+          <p style="font-size: 0.85rem; color: var(--stone); letter-spacing:0.05em;">Total Requests Captured: <strong>${inquiries.length}</strong></p>
+          <button class="item-remove-link" id="clear-inquiries-btn" style="color: #c94a4a; border-bottom: 1px solid #c94a4a; background:none; border:none; cursor:pointer; font-size: 0.72rem; letter-spacing:0.1em; text-transform:uppercase;">Clear Archive</button>
+        </div>
+        <div class="inquiries-table-container">
+          <table class="inquiries-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Customer Profile</th>
+                <th>Location</th>
+                <th>Items Requested</th>
+                <th>Special Notes</th>
+                <th>Total Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${inquiries.map(inq => `
+                <tr>
+                  <td style="white-space:nowrap;">${inq.date}</td>
+                  <td>
+                    <strong>${inq.name}</strong><br/>
+                    <span style="color:var(--stone);font-size:0.75rem;">${inq.email}</span><br/>
+                    <span style="color:var(--stone);font-size:0.75rem;">${inq.phone}</span>
+                  </td>
+                  <td>${inq.city}, ${inq.state}</td>
+                  <td>${inq.items}</td>
+                  <td><span style="font-style:italic;color:var(--stone);">${inq.notes}</span></td>
+                  <td><strong>₹${inq.total.toLocaleString('en-IN')}</strong></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      // Clear inquiries logic
+      const clearBtn = $('#clear-inquiries-btn');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (confirm('Are you sure you want to permanently clear the captured inquiry logs?')) {
+            localStorage.removeItem('nue_inquiries');
+            renderInquiriesPage();
+            showToast('Inquiry logs cleared successfully');
+          }
+        });
+      }
+    };
+    renderInquiriesPage();
+  }
 })();
