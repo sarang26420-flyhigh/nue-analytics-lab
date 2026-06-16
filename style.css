@@ -692,6 +692,15 @@ button {
   color: var(--ivory);
 }
 
+.hero-brand-mark h1 {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  margin: 0;
+}
+
 .hero-divider {
   width: 60px;
   height: 1px;
