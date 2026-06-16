@@ -18,10 +18,16 @@ const state = {
 };
 
 const products = [
-  { id: 1, name: 'The Essential Set', price: 42000, img: 'assets/images/women_linen.webp', category: "Women's Collection", desc: 'A matching set of refined ease, cut from unbleached organic linen for natural texture and simple elegance.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
-  { id: 2, name: 'The Coastal Trouser', price: 28000, img: 'assets/images/yacht.webp', category: "Men's Collection", desc: 'Tailored for leisure. A structured yet relaxed trouser cut from breathable linen, perfect for seaside afternoons.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '80% Organic Linen, 20% Silk. Dry clean only. Made in Italy.' },
-  { id: 3, name: 'The Olive Shirt', price: 24500, img: 'assets/images/forest.webp', category: "Men's Collection", desc: 'An earth-toned essential crafted in olive linen, featuring a relaxed drape and clean, minimal stitching.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Hand wash cold. Made in Portugal.' },
-  { id: 4, name: 'The Linen Shirt', price: 18000, img: 'assets/images/product4.webp', category: "Collection", desc: 'The cornerstone of a timeless wardrobe, cut from light ivory linen with a clean, classic collar.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Machine wash on gentle. Made in Portugal.' },
+  { id: 1, name: 'The Essential Set', price: 42000, img: 'assets/images/women_linen.webp', category: "Women's Linen Collection", desc: 'A matching set of refined ease, cut from unbleached organic linen for natural texture and simple elegance.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
+  { id: 2, name: 'The Coastal Trouser', price: 28000, img: 'assets/images/yacht.webp', category: "Coastal Collection", desc: 'Tailored for leisure. A structured yet relaxed trouser cut from breathable linen, perfect for seaside afternoons.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '80% Organic Linen, 20% Silk. Dry clean only. Made in Italy.' },
+  { id: 3, name: 'The Olive Shirt', price: 24500, img: 'assets/images/forest.webp', category: "Everyday Uniforms", desc: 'An earth-toned essential crafted in olive linen, featuring a relaxed drape and clean, minimal stitching.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Hand wash cold. Made in Portugal.' },
+  { id: 4, name: 'The Linen Shirt', price: 18000, img: 'assets/images/product4.webp', category: "Linen Essentials", desc: 'The cornerstone of a timeless wardrobe, cut from light ivory linen with a clean, classic collar.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Machine wash on gentle. Made in Portugal.' },
+  { id: 5, name: 'The Dune Trench', price: 56000, img: 'assets/images/product5.webp', category: "Everyday Uniforms", desc: 'An unstructured trench coat in heavyweight linen, featuring raw edges and a relaxed, draped silhouette.', sizes: ['S', 'M', 'L', 'XL'], material: '100% Belgian Linen. Unlined structure. Dry clean only. Made in France.' },
+  { id: 6, name: 'The Linen Slip', price: 22000, img: 'assets/images/product6.webp', category: "Women's Linen Collection", desc: 'A fluid silhouette bias-cut from soft, pre-washed linen. Effortless elegance for warm summer evenings.', sizes: ['XS', 'S', 'M', 'L'], material: '100% Fine Irish Linen. Adjustable silk straps. Hand wash cold. Made in Japan.' },
+  { id: 7, name: 'The Resort Knit', price: 32000, img: 'assets/images/product7.webp', category: "Coastal Collection", desc: 'A dry-hand open-knit polo crafted from an organic linen-cotton blend. Breathable texture for coastal breezes.', sizes: ['S', 'M', 'L', 'XL'], material: '65% Organic Linen, 35% Organic Cotton. Hand wash flat. Made in Italy.' },
+  { id: 8, name: 'The Evening Blazer', price: 48000, img: 'assets/images/product8.webp', category: "Evening Edit", desc: 'A double-breasted relaxed blazer cut from a structured linen-wool blend, offering architectural drape.', sizes: ['S', 'M', 'L', 'XL'], material: '60% Organic Linen, 40% Virgin Wool. Full Bemberg lining. Dry clean. Made in Italy.' },
+  { id: 9, name: 'The Studio Vest', price: 19500, img: 'assets/images/product9.webp', category: "Linen Essentials", desc: 'A tailored linen vest with a clean, buttonless front and adjustable back tab. A minimalist layering piece.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Mother of pearl hardware on back. Made in Portugal.' },
+  { id: 10, name: 'The Silk Linen Trouser', price: 34000, img: 'assets/images/product10.webp', category: "Evening Edit", desc: 'A wide-leg trouser cut from a premium silk-linen blend, highlighting structural pleats and fluid movement.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '55% Silk, 45% Organic Linen. Side seam pockets. Dry clean. Made in Japan.' }
 ];
 
 /* ─── Utility Functions ──────────────────────────────────── */
@@ -1050,13 +1056,22 @@ function openQuickView(id) {
   // Related products (excluding active one)
   const relatedGrid = $('#related-grid');
   if (relatedGrid) {
-    const related = products.filter(p => p.id !== product.id);
+    const related = products
+      .filter(p => p.id !== product.id)
+      .sort((a, b) => {
+        const aMatch = a.category === product.category ? 1 : 0;
+        const bMatch = b.category === product.category ? 1 : 0;
+        return bMatch - aMatch;
+      })
+      .slice(0, 3);
+
     relatedGrid.innerHTML = related.map(p => `
       <article class="product-card reveal" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-category="${p.category}" data-analytics-product-id="${p.id}">
         <div class="product-image-wrap">
           <img src="${p.img}" alt="${p.name} — NUE" class="product-img" loading="lazy" />
           <div class="product-overlay">
-            <a href="product.html?id=${p.id}" class="quick-view-btn" data-id="${p.id}" aria-label="View ${p.name}">View</a>
+            <button class="quick-view-btn" data-id="${p.id}" aria-label="Quick View ${p.name}">Quick View</button>
+            <a href="product.html?id=${p.id}" class="view-product-btn" aria-label="View ${p.name} Details">View Product</a>
           </div>
           <button class="wishlist-btn-card${state.wishlist.includes(p.id) ? ' wishlisted' : ''}" data-id="${p.id}" aria-label="Add to wishlist" title="Add to wishlist">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -1079,3 +1094,36 @@ function openQuickView(id) {
 if (window.location.search.includes('debug')) {
   console.log('NUE — Website initialized. State:', state);
 }
+
+/* ─── Collection Filtering ────────────────────────────────── */
+(function initCollectionFilter() {
+  const filterBtns = $$('.col-nav-btn');
+  const cards = $$('.collection-grid .product-card');
+  if (filterBtns.length === 0 || cards.length === 0) return;
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+
+      // Update active button
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Filter cards
+      cards.forEach(card => {
+        const category = card.dataset.category;
+        if (filter === 'all' || category === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      // Trigger GA4 analytics event for category filtering
+      window.dataLayer.push({
+        event: 'collection_filter',
+        collection_category: filter
+      });
+    });
+  });
+})();
