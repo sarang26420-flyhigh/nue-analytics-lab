@@ -118,7 +118,7 @@ function showToast(message) {
     }
   }, { passive: true });
   document.addEventListener('mousedown', () => cursor.classList.add('is-clicking'), { passive: true });
-  document.addEventListener('mouseup',   () => cursor.classList.remove('is-clicking'), { passive: true });
+  document.addEventListener('mouseup', () => cursor.classList.remove('is-clicking'), { passive: true });
 })();
 
 /* ─── Navigation ──────────────────────────────────────────── */
@@ -170,7 +170,7 @@ function showToast(message) {
 
 /* ─── Hero Parallax ──────────────────────────────────────── */
 (function initHeroParallax() {
-  const heroBg      = $('#hero-bg');
+  const heroBg = $('#hero-bg');
   const heroContent = $('#hero-content');
   const heroSection = $('#hero');
   if (!heroBg) return;
@@ -181,14 +181,14 @@ function showToast(message) {
     if (!ticking) {
       requestAnimationFrame(() => {
         const scrollY = window.scrollY;
-        const heroH   = heroSection.offsetHeight;
+        const heroH = heroSection.offsetHeight;
         if (scrollY <= heroH) {
           const progress = scrollY / heroH;
           // Zoom out effect
           const scale = 1.1 - (progress * 0.08);
           heroBg.style.transform = `scale(${Math.max(scale, 1)})`;
           // Fade content upward
-          heroContent.style.opacity  = 1 - (progress * 2.2);
+          heroContent.style.opacity = 1 - (progress * 2.2);
           heroContent.style.transform = `translateY(${-scrollY * 0.35}px)`;
         }
         ticking = false;
@@ -271,16 +271,16 @@ function initTiltCards() {
   const tiltCards = $$('[data-tilt]');
   tiltCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
-      const rect  = card.getBoundingClientRect();
-      const x     = (e.clientX - rect.left) / rect.width  - 0.5;
-      const y     = (e.clientY - rect.top)  / rect.height - 0.5;
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
       card.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateZ(8px)`;
 
       // Move spotlight
       const spotlight = card.querySelector('.essential-spotlight');
       if (spotlight) {
         spotlight.style.left = ((e.clientX - rect.left) / rect.width * 100) + '%';
-        spotlight.style.top  = ((e.clientY - rect.top)  / rect.height * 100) + '%';
+        spotlight.style.top = ((e.clientY - rect.top) / rect.height * 100) + '%';
       }
     });
     card.addEventListener('mouseleave', () => {
@@ -291,10 +291,10 @@ function initTiltCards() {
 
 /* ─── Search ─────────────────────────────────────────────── */
 (function initSearch() {
-  const btn     = $('#search-btn');
+  const btn = $('#search-btn');
   const overlay = $('#search-overlay');
-  const close   = $('#search-close');
-  const input   = $('#search-input');
+  const close = $('#search-close');
+  const input = $('#search-input');
   const results = $('#search-results');
 
   function openSearch() {
@@ -370,14 +370,14 @@ function initTiltCards() {
 
 /* ─── Cart System ─────────────────────────────────────────── */
 (function initCart() {
-  const cartBtn     = $('#cart-btn');
+  const cartBtn = $('#cart-btn');
   const cartSidebar = $('#cart-sidebar');
   const cartOverlay = $('#cart-overlay');
-  const cartClose   = $('#cart-close');
-  const cartItems   = $('#cart-items');
-  const cartFooter  = $('#cart-footer');
-  const cartCount   = $('#cart-count');
-  const cartTotal   = $('#cart-total-price');
+  const cartClose = $('#cart-close');
+  const cartItems = $('#cart-items');
+  const cartFooter = $('#cart-footer');
+  const cartCount = $('#cart-count');
+  const cartTotal = $('#cart-total-price');
 
   function openCart() {
     cartSidebar.classList.add('open');
@@ -493,8 +493,8 @@ function initTiltCards() {
     const btn = e.target.closest('.add-to-cart');
     if (!btn) return;
 
-    const id    = parseInt(btn.dataset.id);
-    const name  = btn.dataset.name;
+    const id = parseInt(btn.dataset.id);
+    const name = btn.dataset.name;
     const price = parseInt(btn.dataset.price);
     const product = products.find(p => p.id === id);
 
@@ -610,7 +610,7 @@ function openQuickView(id) {
     }
   });
 
-  const modal   = $('#quickview-modal');
+  const modal = $('#quickview-modal');
   const overlay = $('#modal-overlay');
   const gallery = $('#qv-gallery');
   const details = $('#qv-details');
@@ -652,9 +652,9 @@ function openQuickView(id) {
 }
 
 (function initQuickView() {
-  const modal   = $('#quickview-modal');
+  const modal = $('#quickview-modal');
   const overlay = $('#modal-overlay');
-  const close   = $('#modal-close');
+  const close = $('#modal-close');
 
   function closeModal() {
     if (modal) {
@@ -700,12 +700,12 @@ function openQuickView(id) {
 /* ─── Lifestyle Mode ─────────────────────────────────────── */
 (function initLifestyleMode() {
   const toggleBtn = $('#lifestyle-toggle');
-  const overlay   = $('#lifestyle-mode');
-  const exitBtn   = $('#lm-exit');
-  const prevBtn   = $('#lm-prev');
-  const nextBtn   = $('#lm-next');
-  const dots      = $$('.lm-dot');
-  const slides    = $$('.lm-slide');
+  const overlay = $('#lifestyle-mode');
+  const exitBtn = $('#lm-exit');
+  const prevBtn = $('#lm-prev');
+  const nextBtn = $('#lm-next');
+  const dots = $$('.lm-dot');
+  const slides = $$('.lm-slide');
 
   function goToSlide(idx) {
     slides.forEach(s => s.classList.remove('active'));
@@ -773,8 +773,8 @@ function openQuickView(id) {
   document.addEventListener('keydown', (e) => {
     if (!state.lifestyleMode) return;
     if (e.key === 'ArrowRight') nextBtn.click();
-    if (e.key === 'ArrowLeft')  prevBtn.click();
-    if (e.key === 'Escape')     closeMode();
+    if (e.key === 'ArrowLeft') prevBtn.click();
+    if (e.key === 'Escape') closeMode();
   });
 
   // Touch/swipe
@@ -794,7 +794,7 @@ function openQuickView(id) {
 
 /* ─── Newsletter ─────────────────────────────────────────── */
 (function initNewsletter() {
-  const form  = $('#newsletter-form');
+  const form = $('#newsletter-form');
   const input = $('#newsletter-email');
 
   form.addEventListener('submit', (e) => {
@@ -896,11 +896,11 @@ function openQuickView(id) {
         rafId = null;
         return;
       }
-      
+
       currentX += (targetX - currentX) * 0.15;
       currentY += (targetY - currentY) * 0.15;
       target.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
-      
+
       rafId = requestAnimationFrame(animate);
     }
   });
@@ -921,7 +921,7 @@ function openQuickView(id) {
 /* ─── Performance: Pause animations off-screen ───────────── */
 (function initPerformance() {
   const marquee = $('.marquee-inner');
-  const social  = $('#social-track');
+  const social = $('#social-track');
 
   const pauseObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -932,7 +932,7 @@ function openQuickView(id) {
   }, { threshold: 0 });
 
   if (marquee) pauseObserver.observe(marquee);
-  if (social)  pauseObserver.observe(social);
+  if (social) pauseObserver.observe(social);
 })();
 
 /* ─── GTM/GA4 Tracking Integration ───────────────────────── */
@@ -968,7 +968,7 @@ function openQuickView(id) {
       });
     }
   });
-  
+
   // 4. Newsletter Signup form submit (footer)
   document.addEventListener('submit', (e) => {
     const form = e.target.closest('[data-analytics="newsletter_signup"]');
@@ -1086,7 +1086,7 @@ function openQuickView(id) {
   if (galleryEl) {
     galleryEl.innerHTML = `<img src="${product.img}" alt="${product.name}" class="product-detail-img" loading="eager" />`;
   }
-  
+
   if (addToCartBtn) {
     addToCartBtn.dataset.id = product.id;
     addToCartBtn.dataset.name = product.name;
@@ -1197,7 +1197,7 @@ if (window.location.search.includes('debug')) {
   const inquiriesContainer = $('#inquiries-container');
 
   if (cartContainer) {
-    window.renderCartPage = function() {
+    window.renderCartPage = function () {
       const total = state.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
       if (state.cart.length === 0) {
         cartContainer.innerHTML = `
@@ -1218,8 +1218,8 @@ if (window.location.search.includes('debug')) {
               <span style="text-align:right; padding-right:1rem;">Subtotal</span>
             </div>
             ${state.cart.map(item => {
-              const product = products.find(p => p.id === item.id);
-              return `
+        const product = products.find(p => p.id === item.id);
+        return `
                 <div class="cart-page-item">
                   <div class="cart-page-item-info">
                     <img src="${item.img}" alt="${item.name}" class="cart-page-item-img" />
@@ -1241,7 +1241,7 @@ if (window.location.search.includes('debug')) {
                   </div>
                 </div>
               `;
-            }).join('')}
+      }).join('')}
           </div>
 
           <div class="order-summary-card">
@@ -1312,7 +1312,7 @@ if (window.location.search.includes('debug')) {
   }
 
   if (checkoutContainer) {
-    const renderCheckoutPage = function() {
+    const renderCheckoutPage = function () {
       const total = state.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
       if (state.cart.length === 0) {
         checkoutContainer.innerHTML = `
@@ -1447,7 +1447,7 @@ if (window.location.search.includes('debug')) {
   }
 
   if (inquiriesContainer) {
-    const renderInquiriesPage = function() {
+    const renderInquiriesPage = function () {
       let inquiries = [];
       try {
         const savedInquiries = localStorage.getItem('nue_inquiries');
