@@ -35,16 +35,23 @@ function loadState() {
 loadState();
 
 const products = [
-  { id: 1, name: 'The Essential Set', price: 42000, img: 'assets/images/women_linen.webp', category: "Women's Linen Collection", desc: 'A matching set of refined ease, cut from unbleached organic linen for natural texture and simple elegance.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
+  { id: 1, name: 'The Essential Set', price: 42000, img: 'assets/images/essential_set_new.png', category: "Women's Linen Collection", desc: 'A matching set of refined ease, cut from unbleached organic linen for natural texture and simple elegance.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
   { id: 2, name: 'The Coastal Trouser', price: 28000, img: 'assets/images/yacht.webp', category: "Coastal Collection", desc: 'Tailored for leisure. A structured yet relaxed trouser cut from breathable linen, perfect for seaside afternoons.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '80% Organic Linen, 20% Silk. Dry clean only. Made in Italy.' },
   { id: 3, name: 'The Olive Shirt', price: 24500, img: 'assets/images/forest.webp', category: "Everyday Uniforms", desc: 'An earth-toned essential crafted in olive linen, featuring a relaxed drape and clean, minimal stitching.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Hand wash cold. Made in Portugal.' },
   { id: 4, name: 'The Linen Shirt', price: 18000, img: 'assets/images/product4.webp', category: "Linen Essentials", desc: 'The cornerstone of a timeless wardrobe, cut from light ivory linen with a clean, classic collar.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Machine wash on gentle. Made in Portugal.' },
-  { id: 5, name: 'The Dune Trench', price: 56000, img: 'assets/images/product5.webp', category: "Everyday Uniforms", desc: 'An unstructured trench coat in heavyweight linen, featuring raw edges and a relaxed, draped silhouette.', sizes: ['S', 'M', 'L', 'XL'], material: '100% Belgian Linen. Unlined structure. Dry clean only. Made in France.' },
+  { id: 5, name: 'The Dune Trench', price: 56000, img: 'assets/images/product5.webp', category: "Everyday Uniforms", desc: 'An unstructured trench coat in heavyweight linen, featuring raw edges and a relaxed, draped silhouette.', sizes: ['S', 'M', 'L', 'XL'], material: '100% Belgian Linen. Unlined structure. Dry clean only. Made in France.', outOfStock: true },
   { id: 6, name: 'The Linen Slip', price: 22000, img: 'assets/images/product6.webp', category: "Women's Linen Collection", desc: 'A fluid silhouette bias-cut from soft, pre-washed linen. Effortless elegance for warm summer evenings.', sizes: ['XS', 'S', 'M', 'L'], material: '100% Fine Irish Linen. Adjustable silk straps. Hand wash cold. Made in Japan.' },
   { id: 7, name: 'The Resort Knit', price: 32000, img: 'assets/images/product7.webp', category: "Coastal Collection", desc: 'A dry-hand open-knit polo crafted from an organic linen-cotton blend. Breathable texture for coastal breezes.', sizes: ['S', 'M', 'L', 'XL'], material: '65% Organic Linen, 35% Organic Cotton. Hand wash flat. Made in Italy.' },
   { id: 8, name: 'The Evening Blazer', price: 48000, img: 'assets/images/product8.webp', category: "Evening Edit", desc: 'A double-breasted relaxed blazer cut from a structured linen-wool blend, offering architectural drape.', sizes: ['S', 'M', 'L', 'XL'], material: '60% Organic Linen, 40% Virgin Wool. Full Bemberg lining. Dry clean. Made in Italy.' },
   { id: 9, name: 'The Studio Vest', price: 19500, img: 'assets/images/product9.webp', category: "Linen Essentials", desc: 'A tailored linen vest with a clean, buttonless front and adjustable back tab. A minimalist layering piece.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Mother of pearl hardware on back. Made in Portugal.' },
-  { id: 10, name: 'The Silk Linen Trouser', price: 34000, img: 'assets/images/product10.webp', category: "Evening Edit", desc: 'A wide-leg trouser cut from a premium silk-linen blend, highlighting structural pleats and fluid movement.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '55% Silk, 45% Organic Linen. Side seam pockets. Dry clean. Made in Japan.' }
+  { id: 10, name: 'The Silk Linen Trouser', price: 34000, img: 'assets/images/product10.webp', category: "Evening Edit", desc: 'A wide-leg trouser cut from a premium silk-linen blend, highlighting structural pleats and fluid movement.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '55% Silk, 45% Organic Linen. Side seam pockets. Dry clean. Made in Japan.', outOfStock: true },
+  { id: 11, name: 'The Modern Trench', price: 46000, img: 'assets/images/mens_trench.png', category: "Men's Collection", desc: 'A clean, overcoat silhouette tailored from raw linen, featuring structural seam detailing and raw elegance.', sizes: ['S', 'M', 'L', 'XL'], material: '100% Belgian Linen. Unlined structure. Dry clean only. Made in France.' },
+  { id: 12, name: 'The Ivory Resort Shirt', price: 19000, img: 'assets/images/10-Best-White-Outfits-For-Men-in-2022-930x620.jpg.webp', category: "Men's Collection", desc: 'Designed for optimal seasonal breathability. A premium loose-draping linen shirt with a modern cuban collar.', sizes: ['S', 'M', 'L', 'XL'], material: '100% Fine Flax Linen. Made in Italy.' },
+  { id: 13, name: 'The Classic Knit Polo', price: 22500, img: 'assets/images/James-perce.jpg.webp', category: "Men's Collection", desc: 'A lightweight and dry-textured cotton-linen knit polo in neutral slate, designed with a clean placket.', sizes: ['S', 'M', 'L', 'XL'], material: '80% Organic Cotton, 20% Linen. Made in Japan.' },
+  { id: 14, name: 'The Linen Wrap Dress', price: 31000, img: 'assets/images/womens_wrap_dress.png', category: "Women's Collection", desc: 'A beautiful wrapped silhouette in structured flax linen, designed to drape naturally around the body.', sizes: ['XS', 'S', 'M', 'L'], material: '100% Organic Linen. Made in Italy.' },
+  { id: 15, name: 'The Summer Camisole', price: 14500, img: 'assets/images/womens_camisole.png', category: "Women's Collection", desc: 'A delicate, fluid bias-cut top in soft cream linen, highlighting a low cowl back and adjustable straps.', sizes: ['XS', 'S', 'M', 'L'], material: '100% Fine Irish Linen. Made in Japan.' },
+  { id: 16, name: 'The Organic Tee', price: 9500, img: 'assets/images/essential_tee.png', category: "Essentials Collection", desc: 'A heavyweight organic cotton tee, cut with a relaxed shoulder and dense, dry texture.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Heavyweight Organic Cotton. Made in Portugal.' },
+  { id: 17, name: 'The Linen Scarf', price: 11000, img: 'assets/images/about.webp', category: "Essentials Collection", desc: 'A soft, open-weave raw linen scarf finished with clean eyelash fringe, perfect for neutral layering.', sizes: ['One Size'], material: '100% Belgian Flax. Raw finish. Made in France.' }
 ];
 
 /* ─── Utility Functions ──────────────────────────────────── */
@@ -91,8 +98,8 @@ function showToast(message) {
   }, { passive: true });
 
   function animateFollower() {
-    followerX += (mouseX - followerX) * 0.12;
-    followerY += (mouseY - followerY) * 0.12;
+    followerX += (mouseX - followerX) * 0.32;
+    followerY += (mouseY - followerY) * 0.32;
 
     cursor.style.setProperty('--cursor-x', `${mouseX}px`);
     cursor.style.setProperty('--cursor-y', `${mouseY}px`);
@@ -421,6 +428,17 @@ function initTiltCards() {
     }
 
     cartFooter.style.display = 'block';
+    let partnerLink = cartFooter.querySelector('.partner-interlink');
+    if (!partnerLink) {
+      partnerLink = document.createElement('div');
+      partnerLink.className = 'partner-interlink';
+      partnerLink.innerHTML = `
+        <a href="https://cardniti.com" target="_blank" rel="noopener noreferrer">
+          Explore our partner experience
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>`;
+      cartFooter.appendChild(partnerLink);
+    }
     cartItems.innerHTML = state.cart.map(item => `
       <div class="cart-item">
         <img src="${item.img}" alt="${item.name}" class="cart-item-img" />
@@ -1263,6 +1281,12 @@ if (window.location.search.includes('debug')) {
               <span>₹${total.toLocaleString('en-IN')}</span>
             </div>
             <a href="checkout.html" class="btn-primary" style="display:block; text-align:center; padding: 1.1rem 0; letter-spacing: 0.2em; font-size: 0.72rem; text-transform: uppercase; color: var(--ivory); background: var(--charcoal);">Proceed to Checkout</a>
+            <div class="partner-interlink">
+              <a href="https://cardniti.com" target="_blank" rel="noopener noreferrer">
+                Explore our partner experience
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
           </div>
         </div>
       `;
@@ -1383,6 +1407,12 @@ if (window.location.search.includes('debug')) {
             <span>Total Request Value</span>
             <span>₹${total.toLocaleString('en-IN')}</span>
           </div>
+          <div class="partner-interlink">
+            <a href="https://cardniti.com" target="_blank" rel="noopener noreferrer">
+              Explore our partner experience
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>
+          </div>
         </div>
       `;
 
@@ -1417,6 +1447,7 @@ if (window.location.search.includes('debug')) {
           const inquiriesList = savedInquiries ? JSON.parse(savedInquiries) : [];
           inquiriesList.push(newInquiry);
           localStorage.setItem('nue_inquiries', JSON.stringify(inquiriesList));
+          localStorage.setItem('nue_last_inquiry', JSON.stringify(newInquiry));
         } catch (err) {
           console.error('Error saving inquiries:', err);
         }
@@ -1515,5 +1546,31 @@ if (window.location.search.includes('debug')) {
       }
     };
     renderInquiriesPage();
+  }
+})();
+
+// Render Success Page details
+(function initSuccessPage() {
+  const successSummary = $('#success-summary');
+  if (successSummary) {
+    const lastInquiry = localStorage.getItem('nue_last_inquiry');
+    if (lastInquiry) {
+      try {
+        const inq = JSON.parse(lastInquiry);
+        successSummary.innerHTML = `
+          <div class="success-receipt" style="margin: 2rem 0; border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: left; animation: fade-up 0.5s var(--ease-out);">
+            <p style="font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 1.25rem; text-align: center; color: var(--charcoal); letter-spacing: 0.05em;">Request Details</p>
+            <div style="font-size: 0.8rem; line-height: 2; color: var(--text); background: var(--beige); padding: 1.5rem; border-radius: 1px;">
+              <p style="margin-bottom: 0.5rem; border-bottom: 1px solid rgba(42,42,42,0.06); padding-bottom: 0.5rem;"><strong>Customer Name:</strong> ${inq.name}</p>
+              <p style="margin-bottom: 0.5rem; border-bottom: 1px solid rgba(42,42,42,0.06); padding-bottom: 0.5rem;"><strong>Email:</strong> ${inq.email}</p>
+              <p style="margin-bottom: 0.5rem; border-bottom: 1px solid rgba(42,42,42,0.06); padding-bottom: 0.5rem;"><strong>Items:</strong> ${inq.items}</p>
+              <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--charcoal);"><strong>Total Value:</strong> ₹${inq.total.toLocaleString('en-IN')}</p>
+            </div>
+          </div>
+        `;
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 })();
