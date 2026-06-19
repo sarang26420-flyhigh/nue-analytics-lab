@@ -1482,7 +1482,12 @@ if (window.location.search.includes('debug')) {
               <span>Total Request Value</span>
               <span>₹${total.toLocaleString('en-IN')}</span>
             </div>
-            <a href="checkout.html" class="btn-primary" style="display:block; text-align:center; padding: 1.1rem 0; letter-spacing: 0.2em; font-size: 0.72rem; text-transform: uppercase; color: var(--ivory); background: var(--charcoal);">Proceed to Checkout</a>
+            <a href="checkout.html" class="btn-primary" id="cart-proceed-checkout-btn" style="display:block; text-align:center; padding: 1.1rem 0; letter-spacing: 0.2em; font-size: 0.72rem; text-transform: uppercase; color: var(--ivory); background: var(--charcoal);">Proceed to Checkout</a>
+            <div class="cardniti-cart-link-wrap">
+              <a href="https://cardniti.com/" target="_blank" rel="noopener noreferrer" class="cardniti-cart-link" id="cardniti-cart-cta">
+                Looking for premium gifting? Visit&nbsp;<span class="cardniti-brand">Cardniti</span>&nbsp;&rarr;
+              </a>
+            </div>
           </div>
         </div>
       `;
@@ -1590,12 +1595,6 @@ if (window.location.search.includes('debug')) {
             <button type="submit" class="btn-primary full-width" style="padding:1.2rem 0; letter-spacing: 0.25em; text-transform: uppercase; font-size: 0.72rem; color: var(--ivory); background: var(--charcoal); margin-top:1rem; border:none; cursor:pointer;">
               Place Order Request
             </button>
-            <div class="cardniti-checkout-link-wrap">
-              <a href="https://cardniti.com/" target="_blank" rel="noopener noreferrer" class="cardniti-checkout-link" id="cardniti-checkout-cta">
-                Explore our gifting partner:&nbsp;<span class="cardniti-brand">Cardniti</span>
-                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              </a>
-            </div>
           </form>
         </div>
 
