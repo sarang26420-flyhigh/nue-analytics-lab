@@ -1590,6 +1590,12 @@ if (window.location.search.includes('debug')) {
             <button type="submit" class="btn-primary full-width" style="padding:1.2rem 0; letter-spacing: 0.25em; text-transform: uppercase; font-size: 0.72rem; color: var(--ivory); background: var(--charcoal); margin-top:1rem; border:none; cursor:pointer;">
               Place Order Request
             </button>
+            <div class="cardniti-checkout-link-wrap">
+              <a href="https://cardniti.com/" target="_blank" rel="noopener noreferrer" class="cardniti-checkout-link" id="cardniti-checkout-cta">
+                Explore our gifting partner:&nbsp;<span class="cardniti-brand">Cardniti</span>
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
           </form>
         </div>
 

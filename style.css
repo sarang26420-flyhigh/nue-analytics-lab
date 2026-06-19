@@ -3571,3 +3571,53 @@ body.lifestyle-active .hero-content {
     cursor: auto !important;
   }
 }
+
+/* ─── Cardniti Checkout Partner Link ──────────────────────────── */
+.cardniti-checkout-link-wrap {
+  margin-top: 1.25rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.cardniti-checkout-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stone);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+
+.cardniti-checkout-link:hover {
+  color: var(--charcoal);
+  border-bottom-color: var(--charcoal);
+}
+
+.cardniti-checkout-link svg {
+  opacity: 0.5;
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  flex-shrink: 0;
+}
+
+.cardniti-checkout-link:hover svg {
+  opacity: 1;
+  transform: translate(1px, -1px);
+}
+
+.cardniti-brand {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: inherit;
+}
