@@ -7,6 +7,15 @@
 
 // GTM/GA4 dataLayer Initialization
 window.dataLayer = window.dataLayer || [];
+function trackGA4Event(eventName, params = {}) {
+  if (typeof gtag === 'function') {
+    gtag('event', eventName, params);
+  }
+  window.dataLayer.push({
+    event: eventName,
+    ...params
+  });
+}
 
 /* ─── State & Persistence ─────────────────────────────────── */
 const state = {
@@ -35,23 +44,229 @@ function loadState() {
 loadState();
 
 const products = [
-  { id: 1, name: 'The Essential Set', price: 42000, img: 'assets/images/essential_set_new.png', category: "Women's Linen Collection", desc: 'A matching set of refined ease, cut from unbleached organic linen for natural texture and simple elegance.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Unbleached, undyed. Made in Japan.' },
-  { id: 2, name: 'The Coastal Trouser', price: 28000, img: 'assets/images/yacht.webp', category: "Coastal Collection", desc: 'Tailored for leisure. A structured yet relaxed trouser cut from breathable linen, perfect for seaside afternoons.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '80% Organic Linen, 20% Silk. Dry clean only. Made in Italy.' },
-  { id: 3, name: 'The Olive Shirt', price: 24500, img: 'assets/images/forest.webp', category: "Everyday Uniforms", desc: 'An earth-toned essential crafted in olive linen, featuring a relaxed drape and clean, minimal stitching.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Hand wash cold. Made in Portugal.' },
-  { id: 4, name: 'The Linen Shirt', price: 18000, img: 'assets/images/product4.webp', category: "Linen Essentials", desc: 'The cornerstone of a timeless wardrobe, cut from light ivory linen with a clean, classic collar.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Machine wash on gentle. Made in Portugal.' },
-  { id: 5, name: 'The Dune Trench', price: 56000, img: 'assets/images/product5.webp', category: "Everyday Uniforms", desc: 'An unstructured trench coat in heavyweight linen, featuring raw edges and a relaxed, draped silhouette.', sizes: ['S', 'M', 'L', 'XL'], material: '100% Belgian Linen. Unlined structure. Dry clean only. Made in France.', outOfStock: true },
-  { id: 6, name: 'The Linen Slip', price: 22000, img: 'assets/images/product6.webp', category: "Women's Linen Collection", desc: 'A fluid silhouette bias-cut from soft, pre-washed linen. Effortless elegance for warm summer evenings.', sizes: ['XS', 'S', 'M', 'L'], material: '100% Fine Irish Linen. Adjustable silk straps. Hand wash cold. Made in Japan.' },
-  { id: 7, name: 'The Resort Knit', price: 32000, img: 'assets/images/product7.webp', category: "Coastal Collection", desc: 'A dry-hand open-knit polo crafted from an organic linen-cotton blend. Breathable texture for coastal breezes.', sizes: ['S', 'M', 'L', 'XL'], material: '65% Organic Linen, 35% Organic Cotton. Hand wash flat. Made in Italy.' },
-  { id: 8, name: 'The Evening Blazer', price: 48000, img: 'assets/images/product8.webp', category: "Evening Edit", desc: 'A double-breasted relaxed blazer cut from a structured linen-wool blend, offering architectural drape.', sizes: ['S', 'M', 'L', 'XL'], material: '60% Organic Linen, 40% Virgin Wool. Full Bemberg lining. Dry clean. Made in Italy.' },
-  { id: 9, name: 'The Studio Vest', price: 19500, img: 'assets/images/product9.webp', category: "Linen Essentials", desc: 'A tailored linen vest with a clean, buttonless front and adjustable back tab. A minimalist layering piece.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Organic Linen. Mother of pearl hardware on back. Made in Portugal.' },
-  { id: 10, name: 'The Silk Linen Trouser', price: 34000, img: 'assets/images/product10.webp', category: "Evening Edit", desc: 'A wide-leg trouser cut from a premium silk-linen blend, highlighting structural pleats and fluid movement.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '55% Silk, 45% Organic Linen. Side seam pockets. Dry clean. Made in Japan.', outOfStock: true },
-  { id: 11, name: 'The Modern Trench', price: 46000, img: 'assets/images/mens_trench.png', category: "Men's Collection", desc: 'A clean, overcoat silhouette tailored from raw linen, featuring structural seam detailing and raw elegance.', sizes: ['S', 'M', 'L', 'XL'], material: '100% Belgian Linen. Unlined structure. Dry clean only. Made in France.' },
-  { id: 12, name: 'The Ivory Resort Shirt', price: 19000, img: 'assets/images/10-Best-White-Outfits-For-Men-in-2022-930x620.jpg.webp', category: "Men's Collection", desc: 'Designed for optimal seasonal breathability. A premium loose-draping linen shirt with a modern cuban collar.', sizes: ['S', 'M', 'L', 'XL'], material: '100% Fine Flax Linen. Made in Italy.' },
-  { id: 13, name: 'The Classic Knit Polo', price: 22500, img: 'assets/images/James-perce.jpg.webp', category: "Men's Collection", desc: 'A lightweight and dry-textured cotton-linen knit polo in neutral slate, designed with a clean placket.', sizes: ['S', 'M', 'L', 'XL'], material: '80% Organic Cotton, 20% Linen. Made in Japan.' },
-  { id: 14, name: 'The Linen Wrap Dress', price: 31000, img: 'assets/images/womens_wrap_dress.png', category: "Women's Collection", desc: 'A beautiful wrapped silhouette in structured flax linen, designed to drape naturally around the body.', sizes: ['XS', 'S', 'M', 'L'], material: '100% Organic Linen. Made in Italy.' },
-  { id: 15, name: 'The Summer Camisole', price: 14500, img: 'assets/images/womens_camisole.png', category: "Women's Collection", desc: 'A delicate, fluid bias-cut top in soft cream linen, highlighting a low cowl back and adjustable straps.', sizes: ['XS', 'S', 'M', 'L'], material: '100% Fine Irish Linen. Made in Japan.' },
-  { id: 16, name: 'The Organic Tee', price: 9500, img: 'assets/images/essential_tee.png', category: "Essentials Collection", desc: 'A heavyweight organic cotton tee, cut with a relaxed shoulder and dense, dry texture.', sizes: ['XS', 'S', 'M', 'L', 'XL'], material: '100% Heavyweight Organic Cotton. Made in Portugal.' },
-  { id: 17, name: 'The Linen Scarf', price: 11000, img: 'assets/images/about.webp', category: "Essentials Collection", desc: 'A soft, open-weave raw linen scarf finished with clean eyelash fringe, perfect for neutral layering.', sizes: ['One Size'], material: '100% Belgian Flax. Raw finish. Made in France.' }
+  { 
+    id: 1, 
+    name: 'The Essential Set', 
+    price: 42000, 
+    img: 'assets/images/essential_set_new.png', 
+    category: 'Dawn Collection', 
+    collection: 'Dawn Collection',
+    desc: 'A matching set of refined ease, cut from unbleached organic linen for natural texture. A quiet study in silhouette and comfort, designed to drape effortlessly.', 
+    sizes: ['XS', 'S', 'M', 'L', 'XL'], 
+    material: '100% Organic Linen. Unbleached, undyed. Made in Japan.',
+    fabric: '100% Organic Linen. Unbleached, undyed, preserving the raw texture of flax. Made in Japan.',
+    lifestyle: 'Ideal for slow morning rituals, quiet reading rooms, and intentional starts to the day.'
+  },
+  { 
+    id: 2, 
+    name: 'The Coastal Trouser', 
+    price: 28000, 
+    img: 'assets/images/yacht.webp', 
+    category: 'Coastal Collection', 
+    collection: 'Coastal Collection',
+    desc: 'Tailored for elegant leisure. A structured yet relaxed trouser cut from breathable linen, perfect for breezy seaside afternoons and coastal travel.', 
+    sizes: ['XS', 'S', 'M', 'L', 'XL'], 
+    material: '80% Organic Linen, 20% Silk. Dry clean only. Made in Italy.',
+    fabric: '80% Organic Linen, 20% Mulberry Silk. Structured yet light. Made in Italy.',
+    lifestyle: 'Designed for beachside walks, open-deck voyages, and warm-weather dining.'
+  },
+  { 
+    id: 3, 
+    name: 'The Olive Shirt', 
+    price: 24500, 
+    img: 'assets/images/forest.webp', 
+    category: 'Forest Collection', 
+    collection: 'Forest Collection',
+    desc: 'An earth-toned essential crafted in olive linen. Featuring a relaxed drape, clean minimal stitching, and a silhouette that speaks of organic simplicity.', 
+    sizes: ['XS', 'S', 'M', 'L', 'XL'], 
+    material: '100% Organic Linen. Hand wash cold. Made in Portugal.',
+    fabric: '100% Organic Flax Linen. Eco-certified dyes. Hand wash cold. Made in Portugal.',
+    lifestyle: 'Perfect for afternoon strolls in quiet botanical gardens, garden lunches, and forest escapes.'
+  },
+  { 
+    id: 4, 
+    name: 'The Linen Shirt', 
+    price: 18000, 
+    img: 'assets/images/product4.webp', 
+    category: 'Dawn Collection', 
+    collection: 'Dawn Collection',
+    desc: 'The cornerstone of a timeless wardrobe, cut from light ivory linen. Offers a classic collar and a clean, lightweight drape that moves with you.', 
+    sizes: ['XS', 'S', 'M', 'L', 'XL'], 
+    material: '100% Organic Linen. Machine wash on gentle. Made in Portugal.',
+    fabric: '100% Fine Irish Linen. Machine wash on gentle. Made in Portugal.',
+    lifestyle: 'A daily uniform piece, suitable from dawn till dusk for standard city days and quiet workspaces.'
+  },
+  { 
+    id: 5, 
+    name: 'The Dune Trench', 
+    price: 56000, 
+    img: 'assets/images/product5.webp', 
+    category: 'Forest Collection', 
+    collection: 'Forest Collection',
+    desc: 'An unstructured trench coat in heavyweight linen, featuring raw edges and a relaxed, draped silhouette. A statement of effortless luxury.', 
+    sizes: ['S', 'M', 'L', 'XL'], 
+    material: '100% Belgian Linen. Unlined structure. Dry clean only. Made in France.',
+    fabric: '100% Heavyweight Belgian Linen. Unlined structure. Dry clean only. Made in France.',
+    lifestyle: 'Layered over linen shifts for cool evening walks or crisp autumn afternoons.',
+    outOfStock: true 
+  },
+  { 
+    id: 6, 
+    name: 'The Linen Slip', 
+    price: 22000, 
+    img: 'assets/images/product6.webp', 
+    category: 'Dawn Collection', 
+    collection: 'Dawn Collection',
+    desc: 'A fluid silhouette bias-cut from soft, pre-washed linen. Effortless elegance for warm summer evenings, hanging beautifully on the body.', 
+    sizes: ['XS', 'S', 'M', 'L'], 
+    material: '100% Fine Irish Linen. Adjustable silk straps. Hand wash cold. Made in Japan.',
+    fabric: '100% Fine Irish Linen. Adjustable silk straps. Hand wash cold. Made in Japan.',
+    lifestyle: 'Designed for intimate gatherings, candlelit dinners, and balmy summer nights.'
+  },
+  { 
+    id: 7, 
+    name: 'The Resort Knit', 
+    price: 32000, 
+    img: 'assets/images/product7.webp', 
+    category: 'Coastal Collection', 
+    collection: 'Coastal Collection',
+    desc: 'A dry-hand open-knit polo crafted from an organic linen-cotton blend. Delivers a highly breathable texture that catches the sea breeze.', 
+    sizes: ['S', 'M', 'L', 'XL'], 
+    material: '65% Organic Linen, 35% Organic Cotton. Hand wash flat. Made in Italy.',
+    fabric: '65% Organic Linen, 35% Organic Cotton. Open stitch. Hand wash flat. Made in Italy.',
+    lifestyle: 'A relaxed choice for seaside resort dinners and coastal sunset walks.'
+  },
+  { 
+    id: 8, 
+    name: 'The Evening Blazer', 
+    price: 48000, 
+    img: 'assets/images/product8.webp', 
+    category: 'Midnight Collection', 
+    collection: 'Midnight Collection',
+    desc: 'A double-breasted relaxed blazer cut from a structured linen-wool blend, offering an architectural drape that redefines formal elegance.', 
+    sizes: ['S', 'M', 'L', 'XL'], 
+    material: '60% Organic Linen, 40% Virgin Wool. Full Bemberg lining. Dry clean. Made in Italy.',
+    fabric: '60% Organic Linen, 40% Virgin Wool. Full Bemberg lining. Dry clean. Made in Italy.',
+    lifestyle: 'Tailored for private gallery openings, late-night dinners, and evening gatherings.'
+  },
+  { 
+    id: 9, 
+    name: 'The Studio Vest', 
+    price: 19500, 
+    img: 'assets/images/product9.webp', 
+    category: 'Forest Collection', 
+    collection: 'Forest Collection',
+    desc: 'A tailored linen vest with a clean, buttonless front and adjustable back tab. A minimalist layering piece that completes any ensemble.', 
+    sizes: ['XS', 'S', 'M', 'L', 'XL'], 
+    material: '100% Organic Linen. Mother of pearl hardware on back. Made in Portugal.',
+    fabric: '100% Organic Linen. Mother of pearl hardware on back. Made in Portugal.',
+    lifestyle: 'Designed for creative studio work, gallery curation, and elegant daytime styling.'
+  },
+  { 
+    id: 10, 
+    name: 'The Silk Linen Trouser', 
+    price: 34000, 
+    img: 'assets/images/product10.webp', 
+    category: 'Midnight Collection', 
+    collection: 'Midnight Collection',
+    desc: 'A wide-leg trouser cut from a premium silk-linen blend, highlighting structural pleats and fluid movement. Exudes an air of quiet sophistication.', 
+    sizes: ['XS', 'S', 'M', 'L', 'XL'], 
+    material: '55% Silk, 45% Organic Linen. Side seam pockets. Dry clean. Made in Japan.',
+    fabric: '55% Silk, 45% Organic Linen. Side seam pockets. Dry clean. Made in Japan.',
+    lifestyle: 'Worn at midnight lounges, rooftop gatherings, and quiet evening celebrations.',
+    outOfStock: true 
+  },
+  { 
+    id: 11, 
+    name: 'The Modern Trench', 
+    price: 46000, 
+    img: 'assets/images/mens_trench.png', 
+    category: 'Midnight Collection', 
+    collection: 'Midnight Collection',
+    desc: 'A clean, overcoat silhouette tailored from raw linen, featuring structural seam detailing and raw elegance. A protective yet light layer.', 
+    sizes: ['S', 'M', 'L', 'XL'], 
+    material: '100% Belgian Linen. Unlined structure. Dry clean only. Made in France.',
+    fabric: '100% Belgian Linen. Unlined structure. Dry clean only. Made in France.',
+    lifestyle: 'Perfect for transitioning from late-night city walks to evening dinners.'
+  },
+  { 
+    id: 12, 
+    name: 'The Ivory Resort Shirt', 
+    price: 19000, 
+    img: 'assets/images/10-Best-White-Outfits-For-Men-in-2022-930x620.jpg.webp', 
+    category: 'Coastal Collection', 
+    collection: 'Coastal Collection',
+    desc: 'Designed for optimal seasonal breathability. A premium loose-draping linen shirt with a modern cuban collar and clean placket.', 
+    sizes: ['S', 'M', 'L', 'XL'], 
+    material: '100% Fine Flax Linen. Made in Italy.',
+    fabric: '100% Fine Flax Linen. Made in Italy.',
+    lifestyle: 'Perfect for coastal retreats, boat rides, and daytime sun loungers.'
+  },
+  { 
+    id: 13, 
+    name: 'The Classic Knit Polo', 
+    price: 22500, 
+    img: 'assets/images/James-perce.jpg.webp', 
+    category: 'Coastal Collection', 
+    collection: 'Coastal Collection',
+    desc: 'A lightweight and dry-textured cotton-linen knit polo in neutral slate, designed with a clean placket and structured collar.', 
+    sizes: ['S', 'M', 'L', 'XL'], 
+    material: '80% Organic Cotton, 20% Linen. Made in Japan.',
+    fabric: '80% Organic Cotton, 20% Linen. Made in Japan.',
+    lifestyle: 'Perfect for casual resort dressing, yacht cruises, and outdoor dinners.'
+  },
+  { 
+    id: 14, 
+    name: 'The Linen Wrap Dress', 
+    price: 31000, 
+    img: 'assets/images/womens_wrap_dress.png', 
+    category: 'Midnight Collection', 
+    collection: 'Midnight Collection',
+    desc: 'A beautiful wrapped silhouette in structured flax linen, designed to drape naturally around the body for an elegant evening presence.', 
+    sizes: ['XS', 'S', 'M', 'L'], 
+    material: '100% Organic Linen. Made in Italy.',
+    fabric: '100% Organic Linen. Made in Italy.',
+    lifestyle: 'Designed for garden soirées, twilight dinner parties, and evening receptions.'
+  },
+  { 
+    id: 15, 
+    name: 'The Summer Camisole', 
+    price: 14500, 
+    img: 'assets/images/womens_camisole.png', 
+    category: 'Dawn Collection', 
+    collection: 'Dawn Collection',
+    desc: 'A delicate, fluid bias-cut top in soft cream linen, highlighting a low cowl back and adjustable straps for a minimalist finish.', 
+    sizes: ['XS', 'S', 'M', 'L'], 
+    material: '100% Fine Irish Linen. Made in Japan.',
+    fabric: '100% Fine Irish Linen. Made in Japan.',
+    lifestyle: 'Perfect for warm sunny mornings, patio brunches, and layering under light trenches.'
+  },
+  { 
+    id: 16, 
+    name: 'The Organic Tee', 
+    price: 9500, 
+    img: 'assets/images/essential_tee.png', 
+    category: 'Dawn Collection', 
+    collection: 'Dawn Collection',
+    desc: 'A heavyweight organic cotton tee, cut with a relaxed shoulder and dense, dry texture. A premium upgrade to the basic daily uniform.', 
+    sizes: ['XS', 'S', 'M', 'L', 'XL'], 
+    material: '100% Heavyweight Organic Cotton. Made in Portugal.',
+    fabric: '100% Heavyweight Organic Cotton. Made in Portugal.',
+    lifestyle: 'Ideal for everyday comfort, travel, and intentional lounging.'
+  },
+  { 
+    id: 17, 
+    name: 'The Linen Scarf', 
+    price: 11000, 
+    img: 'assets/images/about.webp', 
+    category: 'Forest Collection', 
+    collection: 'Forest Collection',
+    desc: 'A soft, open-weave raw linen scarf finished with clean eyelash fringe, perfect for neutral layering and soft textures.', 
+    sizes: ['One Size'], 
+    material: '100% Belgian Flax. Raw finish. Made in France.',
+    fabric: '100% Belgian Flax. Raw finish. Made in France.',
+    lifestyle: 'An accessory for cool garden mornings, travel layering, and transitional seasons.'
+  }
 ];
 
 /* ─── Utility Functions ──────────────────────────────────── */
@@ -428,17 +643,6 @@ function initTiltCards() {
     }
 
     cartFooter.style.display = 'block';
-    let partnerLink = cartFooter.querySelector('.partner-interlink');
-    if (!partnerLink) {
-      partnerLink = document.createElement('div');
-      partnerLink.className = 'partner-interlink';
-      partnerLink.innerHTML = `
-        <a href="https://cardniti.com" target="_blank" rel="noopener noreferrer">
-          Explore our partner experience
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-        </a>`;
-      cartFooter.appendChild(partnerLink);
-    }
     cartItems.innerHTML = state.cart.map(item => `
       <div class="cart-item">
         <img src="${item.img}" alt="${item.name}" class="cart-item-img" />
@@ -527,19 +731,16 @@ function initTiltCards() {
     renderCart();
 
     // GA4 eCommerce tracking for add_to_cart
-    window.dataLayer.push({
-      event: 'add_to_cart',
-      ecommerce: {
-        currency: 'INR',
-        value: price,
-        items: [{
-          item_id: id.toString(),
-          item_name: name,
-          price: price,
-          item_category: product?.category || '',
-          quantity: 1
-        }]
-      }
+    trackGA4Event('add_to_cart', {
+      currency: 'INR',
+      value: price,
+      items: [{
+        item_id: id.toString(),
+        item_name: name,
+        price: price,
+        item_category: product?.category || '',
+        quantity: 1
+      }]
     });
 
     // Animate button
@@ -612,20 +813,13 @@ function openQuickView(id) {
   const product = products.find(p => p.id === id);
   if (!product) return;
 
-  // GA4 eCommerce tracking for view_item
-  window.dataLayer.push({
-    event: 'view_item',
-    ecommerce: {
-      currency: 'USD',
-      value: product.price,
-      items: [{
-        item_id: product.id.toString(),
-        item_name: product.name,
-        price: product.price,
-        item_category: product.category,
-        quantity: 1
-      }]
-    }
+  // GA4 eCommerce tracking for view_product
+  trackGA4Event('view_product', {
+    item_id: product.id.toString(),
+    item_name: product.name,
+    price: product.price,
+    item_category: product.category,
+    currency: 'INR'
   });
 
   const modal = $('#quickview-modal');
@@ -647,10 +841,14 @@ function openQuickView(id) {
       </div>
     </div>
     <div>
-      <p class="qv-label">Material</p>
-      <p class="qv-material">${product.material}</p>
+      <p class="qv-label">Material & Origin</p>
+      <p class="qv-material">${product.fabric}</p>
     </div>
-    <button class="btn-primary add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" style="margin-top:0.5rem;">
+    <div style="margin-top: 1rem;">
+      <p class="qv-label">Lifestyle</p>
+      <p class="qv-material" style="font-style: italic;">${product.lifestyle}</p>
+    </div>
+    <button class="btn-primary add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" style="margin-top:1.25rem;">
       <span>Add to Selection</span>
     </button>
   `;
@@ -1096,11 +1294,15 @@ function openQuickView(id) {
   const galleryEl = $('#p-gallery');
   const addToCartBtn = $('#p-add-btn');
   const wishlistBtn = $('#p-wishlist-btn');
+  const collectionEl = $('#p-collection');
+  const lifestyleEl = $('#p-lifestyle');
 
   if (nameEl) nameEl.textContent = product.name;
   if (priceEl) priceEl.textContent = `₹${product.price.toLocaleString('en-IN')}`;
   if (descEl) descEl.textContent = product.desc;
   if (materialEl) materialEl.textContent = product.material;
+  if (collectionEl) collectionEl.textContent = product.collection || product.category;
+  if (lifestyleEl) lifestyleEl.textContent = product.lifestyle || '';
   if (galleryEl) {
     galleryEl.innerHTML = `<img src="${product.img}" alt="${product.name}" class="product-detail-img" loading="eager" />`;
   }
@@ -1281,12 +1483,6 @@ if (window.location.search.includes('debug')) {
               <span>₹${total.toLocaleString('en-IN')}</span>
             </div>
             <a href="checkout.html" class="btn-primary" style="display:block; text-align:center; padding: 1.1rem 0; letter-spacing: 0.2em; font-size: 0.72rem; text-transform: uppercase; color: var(--ivory); background: var(--charcoal);">Proceed to Checkout</a>
-            <div class="partner-interlink">
-              <a href="https://cardniti.com" target="_blank" rel="noopener noreferrer">
-                Explore our partner experience
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              </a>
-            </div>
           </div>
         </div>
       `;
@@ -1347,6 +1543,18 @@ if (window.location.search.includes('debug')) {
         `;
         return;
       }
+
+      // Trigger GA4 begin_checkout tracking
+      trackGA4Event('begin_checkout', {
+        value: total,
+        currency: 'INR',
+        items: state.cart.map(item => ({
+          item_id: item.id.toString(),
+          item_name: item.name,
+          price: item.price,
+          quantity: item.qty
+        }))
+      });
 
       checkoutContainer.innerHTML = `
         <div class="checkout-form-wrapper">
@@ -1413,6 +1621,12 @@ if (window.location.search.includes('debug')) {
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
             </a>
           </div>
+          <div class="checkout-trust-badges">
+            <span class="badge-item"><span class="badge-check">✓</span> Secure Checkout</span>
+            <span class="badge-item"><span class="badge-check">✓</span> Premium Linen</span>
+            <span class="badge-item"><span class="badge-check">✓</span> Limited Production</span>
+            <span class="badge-item"><span class="badge-check">✓</span> Slow Fashion</span>
+          </div>
         </div>
       `;
 
@@ -1452,9 +1666,23 @@ if (window.location.search.includes('debug')) {
           console.error('Error saving inquiries:', err);
         }
 
+        // Trigger GA4 submit_inquiry tracking
+        trackGA4Event('submit_inquiry', {
+          inquiry_id: newInquiry.id,
+          customer_city: customerCity,
+          customer_state: customerState,
+          value: newInquiry.total,
+          currency: 'INR',
+          items: state.cart.map(item => ({
+            item_id: item.id.toString(),
+            item_name: item.name,
+            price: item.price,
+            quantity: item.qty
+          }))
+        });
+
         // Trigger GA4 eCommerce purchase tracking log
-        window.dataLayer.push({
-          event: 'purchase_request',
+        trackGA4Event('purchase_request', {
           inquiry_id: newInquiry.id,
           customer_city: customerCity,
           value: newInquiry.total,
@@ -1574,3 +1802,98 @@ if (window.location.search.includes('debug')) {
     }
   }
 })();
+
+// Wishlist Page Dynamic Injection
+(function initWishlistPage() {
+  const wishlistContainer = $('#wishlist-page-container');
+  const wishlistCountBadge = $('#wishlist-count');
+  
+  function updateWishlistBadge() {
+    if (wishlistCountBadge) {
+      wishlistCountBadge.textContent = state.wishlist.length;
+      wishlistCountBadge.classList.toggle('visible', state.wishlist.length > 0);
+    }
+  }
+  
+  if (wishlistContainer) {
+    window.renderWishlistPage = function () {
+      updateWishlistBadge();
+      if (state.wishlist.length === 0) {
+        wishlistContainer.innerHTML = `
+          <div style="padding: 6rem 2rem; text-align: center; background: var(--beige); border-radius: 1px; margin-top: 2rem;">
+            <p style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--charcoal);">Your wishlist is empty.</p>
+            <a href="index.html#collection" class="btn-primary" style="display: inline-block; padding: 1rem 2rem; letter-spacing: 0.2em; font-size: 0.72rem; text-transform: uppercase; color: var(--ivory); background: var(--charcoal);">Return to Collection</a>
+          </div>
+        `;
+        return;
+      }
+
+      wishlistContainer.innerHTML = `
+        <div class="collection-grid" style="margin-top: 2rem;">
+          ${state.wishlist.map(id => {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return '';
+            return `
+              <article class="product-card" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-category="${p.category}" data-analytics-product-id="${p.id}">
+                <div class="product-image-wrap">
+                  <img src="${p.img}" alt="${p.name} — NUE" class="product-img" loading="lazy" />
+                  <div class="product-overlay">
+                    <button class="quick-view-btn" data-id="${p.id}" aria-label="Quick View ${p.name}">Quick View</button>
+                    <a href="product.html?id=${p.id}" class="view-product-btn" aria-label="View ${p.name} Details">View Product</a>
+                  </div>
+                  <button class="wishlist-btn-card wishlisted" data-id="${p.id}" aria-label="Remove from wishlist" title="Remove from wishlist">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  </button>
+                </div>
+                <div class="product-info">
+                  <a href="product.html?id=${p.id}"><h3 class="product-name">${p.name}</h3></a>
+                  <p class="product-desc">${p.category}</p>
+                  <div class="product-footer">
+                    <span class="product-price">₹${p.price.toLocaleString('en-IN')}</span>
+                    <button class="add-to-cart" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" aria-label="Add ${p.name} to cart">Add</button>
+                  </div>
+                </div>
+              </article>
+            `;
+          }).join('')}
+        </div>
+      `;
+      
+      if (typeof initTiltCards === 'function') initTiltCards();
+    };
+
+    renderWishlistPage();
+
+    // Listen to changes in wishlist
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.wishlist-btn-card');
+      if (btn) {
+        setTimeout(() => {
+          renderWishlistPage();
+        }, 150);
+      }
+    });
+  } else {
+    // Just maintain the wishlist badge count on other pages
+    updateWishlistBadge();
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.wishlist-btn-card');
+      if (btn) {
+        setTimeout(() => {
+          updateWishlistBadge();
+        }, 150);
+      }
+    });
+  }
+})();
+
+// Track Cardniti partner click GA4 event
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href*="cardniti.com"]');
+  if (link) {
+    trackGA4Event('cardniti_click', {
+      link_url: link.href,
+      page_location: window.location.href
+    });
+  }
+});

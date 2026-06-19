@@ -3279,3 +3279,295 @@ body.lifestyle-active .hero-content {
   color: var(--charcoal);
   opacity: 1;
 }
+
+/* ==========================================================================
+   PHASE 4: ADDITIONAL OPTIMIZATION & BRAND SYSTEM STYLES
+   ========================================================================== */
+
+/* ─── UGC Section ─── */
+.ugc-section {
+  padding: 8rem 3rem;
+  background: var(--ivory);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.ugc-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  margin-top: 4rem;
+  margin-bottom: 6rem;
+}
+
+.ugc-sub-title {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(42, 42, 42, 0.08);
+  padding-bottom: 1rem;
+}
+
+.ugc-sub-title.text-center {
+  text-align: center;
+}
+
+.ugc-stories, .ugc-journal {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.ugc-story-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ugc-quote {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--charcoal);
+  font-weight: 300;
+}
+
+.ugc-author {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.ugc-journal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ugc-journal-date {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.ugc-journal-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 300;
+  color: var(--charcoal);
+}
+
+.ugc-journal-text {
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--stone);
+}
+
+.ugc-community {
+  margin-top: 4rem;
+}
+
+.ugc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.ugc-grid-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+}
+
+.ugc-grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out), filter 0.4s;
+  filter: grayscale(20%) contrast(1.05);
+}
+
+.ugc-grid-item:hover img {
+  transform: scale(1.03);
+  filter: grayscale(0%) contrast(1.0);
+}
+
+.ugc-grid-caption {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.ugc-grid-item:hover .ugc-grid-caption {
+  opacity: 1;
+}
+
+.ugc-grid-caption span {
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  background: rgba(17, 17, 17, 0.6);
+  padding: 0.4rem 0.8rem;
+  backdrop-filter: blur(4px);
+}
+
+/* ─── SEO Content Section ─── */
+.seo-content-section {
+  padding: 6rem 3rem;
+  background: var(--beige);
+  border-top: 1px solid rgba(42, 42, 42, 0.05);
+  border-bottom: 1px solid rgba(42, 42, 42, 0.05);
+}
+
+.seo-container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.seo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+}
+
+.seo-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.seo-title {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  font-weight: 500;
+}
+
+.seo-text {
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: var(--stone);
+}
+
+.seo-text strong {
+  color: var(--charcoal);
+  font-weight: 400;
+}
+
+/* ─── Collections Labels & Details ─── */
+.product-card-collection {
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.p-collection-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  border: 1px solid rgba(42, 42, 42, 0.12);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1px;
+}
+
+.p-lifestyle-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(42, 42, 42, 0.06);
+}
+
+.p-lifestyle-info {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--stone);
+}
+
+/* ─── Checkout Trust Badges ─── */
+.checkout-trust-badges {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.5rem;
+  padding: 1.25rem;
+  background: var(--beige);
+  border-radius: 1px;
+}
+
+.badge-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.badge-check {
+  color: var(--olive);
+  font-weight: bold;
+}
+
+/* ─── Mobile Responsiveness for UGC & SEO ─── */
+@media (max-width: 1024px) {
+  .ugc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .ugc-container {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  
+  .seo-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .ugc-section, .seo-content-section {
+    padding: 6rem 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .ugc-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .checkout-trust-badges {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+/* ─── Custom Cursor Lag Mitigation (Touch Screen Optimization) ─── */
+@media (max-width: 1024px) {
+  #cursor, #cursor-follower {
+    display: none !important;
+  }
+  
+  body, a, button, [data-tilt], .product-card, .journal-card, .lifestyle-block, .social-item {
+    cursor: auto !important;
+  }
+}
