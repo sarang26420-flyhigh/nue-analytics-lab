@@ -1,5 +1,5 @@
 /**
- * NUE — A Quieter Way To Dress
+ * NUE — Wear The Feeling
  * Premium Minimal Fashion Website JavaScript
  */
 
